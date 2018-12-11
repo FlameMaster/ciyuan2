@@ -1,0 +1,53 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+ext {
+    supportLibraryVersion = "28.0.0"
+    rxJavaVersion = "2.2.4"
+    rxAndroidVersion = "2.1.0"
+    daggerVersion = "2.19"
+    retrofitVersion = "2.5.0"
+    gsonVersion = "2.8.5"
+    disklrucacheVersion = "2.0.2"
+    glideVersion = "4.8.0"
+}
+
+android {
+    compileSdkVersion 28
+    defaultConfig {
+        minSdkVersion 15
+        targetSdkVersion 28
+        versionCode 1
+        versionName "1.0"
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
+
+    dataBinding {
+        enabled = true
+    }
+}
+
+dependencies {
+    api fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+        exclude group: 'com.android.support', module: 'support-annotations'
+    })
+    implementation "com.android.support:appcompat-v7:$supportLibraryVersion"
+    api 'com.android.support:design:28.0.0'
+    //Dagger 解耦
+    api "com.google.dagger:dagger:$daggerVersion"
+    annotationProcessor "com.google.dagger:dagger-compiler:$daggerVersion"
+    //rx套件
+    api "io.reactivex.rxjava2:rxjava:$rxJavaVersion"
+    api "io.reactivex.rxjava2:rxandroid:$rxAndroidVersion"
+    //retrofit2套件
+    api "com.squareup.retrofit2:retrofit:$retrofitVersion"
+    api "com.squareup.retrofit2:adapter-rxjava2:$retrofitVersion"
+    api "com.squareup.retrofit2:converter-gson:$retrofitVersion"
+    api "com.google.code.gson:gson:$gsonVersion"
+    //缓存
+    api "com.jakewharton:disklrucache:$disklrucacheVersion"
+    //图片加载
+//    api "com.github.bumptech.glide:glide:$glideVersion"
+//    annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
+    implementation 'org.jetbrains:annotations-java5:15.0'
+}

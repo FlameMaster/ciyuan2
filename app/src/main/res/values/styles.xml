@@ -1,0 +1,24 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- colorPrimary 定义 ActionBar 的背景色 -->
+        <item name="colorPrimary">#399ab2</item>
+        <!-- colorPrimaryDark 定义状态栏的背景色 -->
+        <item name="colorPrimaryDark">#399ab2</item>
+        <!-- colorAccent 为 colorControlActivated 的默认值，该值用户显示控件的高亮状态 -->
+        <item name="colorAccent">#399ab2</item>
+        <!-- app背景色 -->
+        <item name="android:windowBackground">@color/transparent</item>
+        <!-- textColor 定义标题文字的颜色 -->
+        <item name="android:textColorPrimary">@color/white</item>
+        <!--colorControlNormal 定义actionBar扩展按钮的颜色-->
+        <item name="colorControlNormal">@color/white</item>
+
+        <!--底部ico的默认颜色-->
+        <!--<item name="android:textColorSecondary">@color/white</item>-->
+    </style>
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+    </style>
+
+</resources>

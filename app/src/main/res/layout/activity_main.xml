@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data class="ActivityMainBinding">
+
+        <variable
+            name="ghG"
+            type="com.fengchen.ciyuan2.Ghg"/>
+
+    </data>
+
+    <com.fengchen.ciyuan2.RoundLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#399ab2"
+        app:corner_radius="16dp"
+        >
+
+        <!--容器-->
+        <FrameLayout
+            android:id="@+id/root"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toTopOf="@+id/tabhost"
+            app:layout_constraintTop_toTopOf="parent"
+            android:background="@color/white"
+            />
+
+        <!--底部导航栏-->
+        <RadioGroup
+            android:id="@+id/tabhost"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@color/white"
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            >
+
+            <RadioButton
+                android:id="@+id/tab_0"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/selector_tab_bg_main"
+                android:onClick="@{() -> ghG.test()}"
+                android:button="@null"
+                android:includeFontPadding="false"
+                android:checked="true"
+                />
+
+            <RadioButton
+                android:id="@+id/tab_1"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/selector_tab_bg_main"
+                android:onClick="@{ghG::test}"
+                android:button="@null"
+                android:includeFontPadding="false"
+                />
+
+            <RadioButton
+                android:id="@+id/tab_2"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/selector_tab_bg_main"
+                android:onClick="@{(view)->ghG.test(view,2)}"
+                android:button="@null"
+                android:includeFontPadding="false"
+                />
+        </RadioGroup>
+
+        <ImageView
+            android:id="@+id/test"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            app:layout_constraintTop_toTopOf="parent"
+            android:scaleType="centerCrop"
+            android:fitsSystemWindows="true"
+            />
+
+    </com.fengchen.ciyuan2.RoundLayout>
+</layout>
