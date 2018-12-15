@@ -26,7 +26,7 @@ import io.reactivex.disposables.Disposable;
  * ================================================
  */
 
-public abstract class BaseHttpObserver<T> implements Observer<BaseEntity<T>> {
+public abstract class BaseHttpObserver<D,E extends BaseEntity<D>> implements Observer<E> {
 
     /*用于解除订阅*/
     @Override
@@ -36,20 +36,20 @@ public abstract class BaseHttpObserver<T> implements Observer<BaseEntity<T>> {
 
     /*观察者接收到通知,进行相关操作*/
     @Override
-    public void onNext(BaseEntity<T> tBaseEntity) {
+    public void onNext(E entity) {
         onRequestEnd();
-        if (tBaseEntity.isSuccess()) {
+        if (entity.isSuccess()) {
             try {
-                if (tBaseEntity.getCode() == 0)
-                    onSuccees(tBaseEntity);
+                if (entity.getCode() == 0)
+                    onSuccees(entity);
                 else
-                    onCodeError(tBaseEntity);
+                    onCodeError(entity);
             } catch (Exception e) {
                 e.printStackTrace();
             }
         } else {
             try {
-                onCodeError(tBaseEntity);
+                onCodeError(entity);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -82,21 +82,21 @@ public abstract class BaseHttpObserver<T> implements Observer<BaseEntity<T>> {
     /**
      * 返回成功
      *
-     * @param t
+     * @param entity
      * @throws Exception
      */
-    protected abstract void onSuccees(BaseEntity<T> t) throws Exception;
+    protected abstract void onSuccees(E entity) throws Exception;
 
     /**
      * 返回成功了,但是code错误
      *
-     * @param t
+     * @param entity
      * @throws Exception
      */
-    protected void onCodeError(BaseEntity<T> t) {
-        FCUtils.showToast(t.getMessage());
+    protected void onCodeError(E entity) {
+        FCUtils.showToast(entity.getMessage());
         //添加一个code异常
-        onFailure(new CodeException(t.getCode(), t.getMessage()), false);
+        onFailure(new CodeException(entity.getCode(), entity.getMessage()), false);
     }
 
     /**

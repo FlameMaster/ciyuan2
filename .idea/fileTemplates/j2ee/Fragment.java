@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 #parse("File Header.java")
 public class ${NAME} extends BaseFragment<XxxBionding> {
     @Override
-    protected void inject() {
+    protected void inintFragment() {
 
     }
 

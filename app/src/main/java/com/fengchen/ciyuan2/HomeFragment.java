@@ -1,8 +1,10 @@
 package com.fengchen.ciyuan2;
 
+import android.arch.lifecycle.MutableLiveData;
 import android.databinding.ViewDataBinding;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PagerSnapHelper;
+import android.util.Log;
 
 import com.fengchen.ciyuan2.databinding.FragmentHomeBinding;
 import com.fengchen.ciyuan2.databinding.ItemHomeBannerBinding;
@@ -16,6 +18,14 @@ import com.fengchen.light.utils.FCUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 
 /**
  * ===========================================================
@@ -31,6 +41,8 @@ import java.util.List;
  * ============================================================
  */
 public class HomeFragment extends BaseFragment<FragmentHomeBinding> {
+    FCBean fcBean = new FCBean();
+
     @Override
     protected void initFragment() {
 
@@ -54,6 +66,16 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> {
         list.add(imageParameter);
         banner_adapter.addDatas(list);
 
+        getViewDataBinding().setFc(fcBean);
+        banner_adapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseHolder viewHolder, int position, Object data) {
+                FCUtils.showToast(position + "");
+                fcBean.liveData.postValue("" + position);
+                fcBean.obData.set("" + position);
+            }
+        });
+
         //
         getViewDataBinding().list
                 .setLayoutManager(new LinearLayoutManager(FCUtils.getContext()));
@@ -65,7 +87,23 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> {
             list1.add(imageParameter);
         list_adapter.addDatas(list1);
 
+        Observable
+                .create(new ObservableOnSubscribe<String>() {
 
+                    @Override
+                    public void subscribe(ObservableEmitter<String> emitter){
+                        emitter.onNext("tt");
+                        emitter.onComplete();
+                    }
+                })
+                .subscribeOn(AndroidSchedulers.mainThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(String s) throws Exception {
+                        Log.e("fff",""+s);
+                    }
+                });
     }
 
     @Override

@@ -16,54 +16,16 @@ import com.google.gson.annotations.SerializedName;
  * ================================================
  */
 
-public class BaseEntity<E> {
+public interface BaseEntity<D>{
 
-
-    /*访问成功*/
-    public static final int CODE_NORMAL = 0;
-
-    @SerializedName("status")
-    private int code;
-    @SerializedName("errmsg")
-    private String message;
-    @SerializedName("data")
-    private E data;
-    @SerializedName("date")
-    private String date;
-
-    public boolean isSuccess() {
-        return code == CODE_NORMAL;
-    }
-
-    public int getCode() {
-        return code;
-    }
-
-    public void setCode(int code) {
-        this.code = code;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public E getData() {
-        return data;
-    }
-
-    public void setData(E data) {
-        this.data = data;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
+    /*获取数据模型*/
+    D getData();
+    /*是否成功登陆*/
+    boolean isSuccess();
+    /*获取返回码*/
+    int getCode();
+    /*获取返回信息*/
+    String getMessage();
+    /*获取时间*/
+    long getDate();
 }

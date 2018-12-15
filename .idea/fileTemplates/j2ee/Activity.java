@@ -7,7 +7,7 @@ import android.os.Bundle;
 public class ${NAME} extends BaseActivity<XxxBionding> {
 
     @Override
-    protected void inject() {
+    protected void inintActivity() {
         
     }
 

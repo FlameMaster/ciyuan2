@@ -21,7 +21,7 @@ import com.fengchen.light.model.StateModel;
  * = 分 类 说 明：处理视图和数据的交互
  * ================================================
  */
-public abstract class BaseViewModel<T> extends BaseHttpObserver<T>{
+public abstract class BaseViewModel<D,E extends BaseEntity<D>> extends BaseHttpObserver<D,E>{
 
 
     private StateModel mStateModel;
@@ -53,13 +53,13 @@ public abstract class BaseViewModel<T> extends BaseHttpObserver<T>{
     protected abstract void initData();
 
     /*刷新数据*/
-    protected  void updateData(T data){
+    protected  void updateData(D data){
 
     }
 
-    protected void onSuccees(BaseEntity<T> t){
+    protected void onSuccees(E entity){
         mStateModel.setEmptyState(EmptyState.NORMAL);
-        updateData(t.getData());
+        updateData(entity.getData());
     }
 
     protected void onFailure(Throwable e, boolean isNetWorkError){
