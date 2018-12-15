@@ -26,7 +26,7 @@ import io.reactivex.disposables.Disposable;
  * ================================================
  */
 
-public abstract class BaseHttpObserver<D,E extends BaseEntity<D>> implements Observer<E> {
+public abstract class BaseHttpObserver<D, E extends BaseEntity<D>> implements Observer<E> {
 
     /*用于解除订阅*/
     @Override
@@ -40,10 +40,7 @@ public abstract class BaseHttpObserver<D,E extends BaseEntity<D>> implements Obs
         onRequestEnd();
         if (entity.isSuccess()) {
             try {
-                if (entity.getCode() == 0)
-                    onSuccees(entity);
-                else
-                    onCodeError(entity);
+                onSuccees(entity);
             } catch (Exception e) {
                 e.printStackTrace();
             }
