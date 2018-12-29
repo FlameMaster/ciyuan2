@@ -19,7 +19,6 @@
             android:id="@+id/detailed_bar"
             android:layout_width="match_parent"
             android:layout_height="200dp"
-            android:fitsSystemWindows="true"
             android:theme="@style/AppTheme.AppBarOverlay">
 
             <!--collapsingtoolbar下的子view不能越过菜单栏-->
@@ -31,26 +30,11 @@
                 app:contentScrim="?attr/colorPrimary"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
                 >
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/banner"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:fitsSystemWindows="true"
                         />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="@{fc.obData.get()}"
-                        android:textColor="@color/red"
-                        android:textSize="20sp"
-                        android:gravity="center"
-                        />
-
-                </FrameLayout>
 
             </android.support.design.widget.CollapsingToolbarLayout>
 

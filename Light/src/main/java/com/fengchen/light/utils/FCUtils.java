@@ -82,7 +82,9 @@ public class FCUtils {
      * @return 获取当前时间
      */
     public static long getNowTime() {
-        return new Date().getTime();
+//        ;
+        return System.currentTimeMillis();
+//        return new Date().getTime();
     }
 
     /**

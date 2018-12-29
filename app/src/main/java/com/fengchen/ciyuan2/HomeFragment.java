@@ -1,6 +1,7 @@
 package com.fengchen.ciyuan2;
 
 import android.arch.lifecycle.MutableLiveData;
+import android.content.Intent;
 import android.databinding.ViewDataBinding;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PagerSnapHelper;
@@ -73,6 +74,7 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> {
                 FCUtils.showToast(position + "");
                 fcBean.liveData.postValue("" + position);
                 fcBean.obData.set("" + position);
+
             }
         });
 
@@ -86,6 +88,14 @@ public class HomeFragment extends BaseFragment<FragmentHomeBinding> {
         for (int i = 0; i < 20; i++)
             list1.add(imageParameter);
         list_adapter.addDatas(list1);
+
+        list_adapter.setOnItemClickListener(new BaseRecyclerAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(BaseHolder viewHolder, int position, Object data) {
+                Intent intent = new Intent(FCUtils.getContext(),VideoActivity.class);
+                startActivity(intent);
+            }
+        });
 
         Observable
                 .create(new ObservableOnSubscribe<String>() {

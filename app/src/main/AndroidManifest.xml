@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest package="com.fengchen.ciyuan2"
-          xmlns:android="http://schemas.android.com/apk/res/android">
+          xmlns:android="http://schemas.android.com/apk/res/android"
+          xmlns:tools="http://schemas.android.com/tools">
 
     <application
         android:name=".Ciyuan2Application"
@@ -23,9 +24,21 @@
                 <data android:scheme="ciyuan2" />  <!-- wap中声明的scheme -->
             </intent-filter>
         </activity>
-        <activity android:name=".VideoActivity"/>
+        <activity android:name=".VideoActivity"
+                  android:screenOrientation="portrait"
+                  android:configChanges="orientation|keyboardHidden|screenSize"
+        />
+        <!--切屏不会重新调用各个生命周期，只会执行onConfigurationChanged方法-->
+        <!--android:configChanges=”orientation” 切屏还是会重新调用各个生命周期，切横、竖屏时只会执行一次-->
 
         <service android:name=".MediaPlayerService"/>
+
+
+
     </application>
 
+
+    /*监听屏幕方向切换*/
+    <!--<uses-permission android:name="android.permission.CHANGE_CONFIGURATION"-->
+                     <!--tools:ignore="ProtectedPermissions" />-->
 </manifest>

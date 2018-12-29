@@ -43,12 +43,10 @@ public class StringUtil {
     public static final String REGEX_IP_ADDR = "(25[0-5]|2[0-4]\\d|[0-1]\\d{2}|[1-9]?\\d)";
 
 
-
-
-
     /**
      * 利用签名辅助类，将字符串字节数组
-     * @param str  需要转的字符串
+     *
+     * @param str 需要转的字符串
      */
     public static String md5(String str) {
         byte[] digest = null;
@@ -86,13 +84,13 @@ public class StringUtil {
     }
 
     /*验证邮箱*/
-    public static boolean isEmail(String email){
+    public static boolean isEmail(String email) {
         boolean flag = false;
-        try{
+        try {
             Pattern regex = Pattern.compile(REGEX_EMAIL);
             Matcher matcher = regex.matcher(email);
             flag = matcher.matches();
-        }catch(Exception e){
+        } catch (Exception e) {
             flag = false;
         }
         return flag;
@@ -121,7 +119,7 @@ public class StringUtil {
 
     /*用正则表达式判断密码格式*/
     public static boolean isPassword(String str) {
-        return Pattern.matches(REGEX_PASSWORD,str);
+        return Pattern.matches(REGEX_PASSWORD, str);
     }
 
     /*用ascii码判断字符串是否仅为数字*/
@@ -178,7 +176,7 @@ public class StringUtil {
 
     /*非空判断*/
     public static boolean noNull(String str) {
-        if (str == null || str.equals("")|| str.equals("null"))
+        if (str == null || str.equals("") || str.equals("null"))
             return false;
         return true;
     }
@@ -186,6 +184,7 @@ public class StringUtil {
 
     /**
      * url转成缓存的key
+     *
      * @param imageParameter
      * @return
      */
@@ -196,8 +195,16 @@ public class StringUtil {
                 + imageParameter.getWidth()
                 + ",h_"
                 + imageParameter.getHeight()
-                + ",limit_0/auto-orient,0/quality,q_90"
-                ;
+                + ",limit_0/auto-orient,0/quality,q_90";
         return cacheKey;
+    }
+
+    /*替换操作*/
+    public static String rereplace(@NonNull String root, @NonNull String oldS, String newS) {
+        return root.replace(oldS,newS);
+    }
+    /*替换操作*/
+    public static boolean equals(@NonNull String oldS, @NonNull String newS) {
+        return  oldS.equals(newS);
     }
 }

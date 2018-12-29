@@ -2,12 +2,17 @@ package com.fengchen.ciyuan2;
 
 import android.app.Service;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.media.MediaPlayer;
 import android.os.Binder;
 import android.os.IBinder;
+import android.util.Log;
 
 import java.io.Serializable;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observable;
 
 /**
  * ===========================================================
@@ -45,24 +50,17 @@ public class MediaPlayerService extends Service {
 
     @Override
     public void onDestroy() {
-        mMediaBinder.stop();
+        mMediaBinder.release();
+        mMediaBinder=null;
+        Log.e("结束服务了","mMediaBinder："+mMediaBinder);
+        super.onDestroy();
     }
 
-
-
-
-    /**
-     * 实现一个OnPrepareLister接口,当音乐准备好的时候开始播放
-     */
-    public final class PreparedListener implements MediaPlayer.OnPreparedListener {
-        private int positon;
-
-        public PreparedListener(int positon) {
-            this.positon = positon;
-        }
-
-        @Override
-        public void onPrepared(MediaPlayer mp) {
-        }
+    @Override
+    public boolean onUnbind(Intent intent) {
+        Log.e("解除绑定","intent："+intent);
+        mMediaBinder.pause();
+        return super.onUnbind(intent);
     }
+
 }

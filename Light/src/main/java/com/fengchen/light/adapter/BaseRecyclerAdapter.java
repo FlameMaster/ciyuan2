@@ -2,6 +2,7 @@ package com.fengchen.light.adapter;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
+import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
@@ -101,14 +102,14 @@ public abstract class BaseRecyclerAdapter<T, VH extends BaseHolder> extends Recy
      * 每次添加都会把上一次的头挤下去
      */
     public void addHeaderBinding(ViewDataBinding binding) {
-        if (binding==null)return;
+        if (binding == null) return;
         if (mHeaderBindings.size() == 0) {
             mHeaderBindings.add(DataBindingUtil.inflate(
                     LayoutInflater.from(FCUtils.getContext()), R.layout.null_layout, null, false));
         }
         mHeaderBindings.add(binding);
 
-//        notifyItemInserted(1);
+        notifyItemInserted(1);
     }
 
     /**
@@ -128,7 +129,7 @@ public abstract class BaseRecyclerAdapter<T, VH extends BaseHolder> extends Recy
         //添加进集合
         mInsertBindings.put(position, binding);
 //        notifyDataSetChanged();
-        notifyItemInserted(position);
+//        notifyItemInserted(position);
     }
 
     /**
@@ -144,7 +145,7 @@ public abstract class BaseRecyclerAdapter<T, VH extends BaseHolder> extends Recy
      * 每次添加都会把上一次的尾挤上去
      */
     public void addTailBinding(ViewDataBinding binding) {
-        if (binding==null)return;
+        if (binding == null) return;
         if (mHeaderBindings.size() == 0) {
             mHeaderBindings.add(DataBindingUtil.inflate(
                     LayoutInflater.from(FCUtils.getContext()), R.layout.null_layout, null, false));
@@ -152,16 +153,17 @@ public abstract class BaseRecyclerAdapter<T, VH extends BaseHolder> extends Recy
         mTailBindings.add(binding);
 
         //执行item动画
-//        notifyItemInserted(getHeaderSize() + mDatas.size() + getTailSize() - 1);
+//        notifyItemInserted(getHeaderSize() + getDatas().size() + getInsertSize() + getTailSize());
     }
 
     /**
      * 删除一个尾布局
+     *
      * @param position 删除的尾布局位置
      */
     public void removedTail(int position) {
         mTailBindings.remove(position);
-        notifyItemRemoved(getHeaderSize() + mDatas.size() + getInsertSize() + position);
+        notifyItemRemoved(getHeaderSize() + getDatas().size() + getInsertSize() + position);
     }
 
     /**
@@ -176,39 +178,47 @@ public abstract class BaseRecyclerAdapter<T, VH extends BaseHolder> extends Recy
      */
     public void addDatas(List datas) {
 
-        if (datas==null&&datas.size()<=0)return;
+        if (datas == null && datas.size() <= 0) return;
 
+        int start = getHeaderSize() + getDatas().size();
         mDatas.addAll(datas);//添加数据
         //执行item动画
-        notifyItemRangeInserted(mHeaderBindings.size(), datas.size());
+        notifyItemRangeInserted(start, datas.size());
+        notifyItemRangeChanged(getHeaderSize() + getDatas().size() + getInsertSize()+1,getTailSize());
+//        notifyDataSetChanged();
     }
 
     /**
      * 添加数据
      */
     public void addData(T data) {
-        if (data==null)return;
+        if (data == null) return;
+        int start = getHeaderSize() + getDatas().size();
         mDatas.add(data);
         //执行item动画
-        notifyItemInserted(mHeaderBindings.size() + mDatas.size() - 1);
+        notifyItemRangeInserted(start, 1);
+        notifyItemRangeChanged(getHeaderSize() + getDatas().size() + getInsertSize()+1,getTailSize());
+//        notifyItemInserted(start);
     }
 
     /**
      * 添加数据到前排
      */
     public void addTopData(T data) {
-        if (data==null)return;
+        if (data == null) return;
+
         mDatas.add(0, data);
-        notifyItemInserted(mHeaderBindings.size());
+        notifyItemRangeInserted(getHeaderSize(),
+                getHeaderSize() + getDatas().size() + getInsertSize() + getTailSize());
     }
 
     /**
      * 删除所有数据，一条一条删
      */
     public void clearDatas() {
-        int size2 = mTailBindings.size();
-        int size1 = size2 + mDatas.size() + mInsertBindings.size();
-        int size = size1 + mHeaderBindings.size();
+        int size2 = getTailSize();
+        int size1 = size2 + getDatas().size() + getInsertSize();
+        int size = size1 + getHeaderSize();
 
         if (size > 0) {
             for (int i = 0; i < size; i++) {

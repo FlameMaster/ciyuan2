@@ -1,7 +1,9 @@
 package com.fengchen.ciyuan2;
 
 import android.media.MediaPlayer;
+import android.media.MediaTimestamp;
 import android.os.Binder;
+import android.util.Log;
 import android.view.SurfaceHolder;
 
 import java.io.Serializable;
@@ -35,6 +37,22 @@ public class MediaBinder extends Binder implements Serializable,MediaPlayer.OnCo
         nowMediaPosition =0;
     }
 
+
+    /*释放资源*/
+    public void release(){
+        nowMediaPosition =0;
+        if (mMediaPlayer != null) {
+            mMediaPlayer.stop();
+            mMediaPlayer.reset();
+            mMediaPlayer.release();
+            mMediaPlayer = null;
+        }
+        if (mMedias!=null){
+            mMedias.clear();
+            mMedias=null;
+        }
+    }
+
     /*设置播放列表*/
     public void setMedias(List<MediaModel> datas) {
         mMedias = datas;
@@ -55,7 +73,11 @@ public class MediaBinder extends Binder implements Serializable,MediaPlayer.OnCo
     /*媒体准备完成*/
     @Override
     public void onPrepared(MediaPlayer mp) {
+        Log.e("onPrepared","媒体准备完成");
         start();//开始播放
+        if (nowMediaPosition > 0) {    //如果不是从头播放
+            mMediaPlayer.seekTo(nowMediaPosition);
+        }
     }
 
     /**
@@ -78,7 +100,8 @@ public class MediaBinder extends Binder implements Serializable,MediaPlayer.OnCo
         try {
             mMediaPlayer.reset();//把各项参数恢复到初始状态
             mMediaPlayer.setDataSource(mMedias.get(position).getUrl());
-            mMediaPlayer.prepare();    //进行缓冲
+            mMediaPlayer.prepareAsync();
+//            mMediaPlayer.prepare();    //进行缓冲
             mMediaPlayer.setOnCompletionListener(this);
             mMediaPlayer.setOnPreparedListener(this);
         } catch (Exception e) {
@@ -149,4 +172,5 @@ public class MediaBinder extends Binder implements Serializable,MediaPlayer.OnCo
     public MediaModel getMediaData(int position){
         return mMedias.get(position);
     }
+
 }
