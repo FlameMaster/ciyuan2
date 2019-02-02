@@ -1,57 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".a_movie.VideoActivity">
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data class="ActVideoBD">
+    <data class="FgtMovieBD">
 
+        <variable
+            name="fc"
+            type="com.fengchen.ciyuan2.bean.FCBean"/>
     </data>
-
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
         <!--appbarlayout下的子view可以渗透状态栏-->
         <android.support.design.widget.AppBarLayout
+            android:id="@+id/detailed_bar"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="200dp"
             android:theme="@style/AppTheme.AppBarOverlay">
 
             <!--collapsingtoolbar下的子view不能越过菜单栏-->
             <android.support.design.widget.CollapsingToolbarLayout
+                android:id="@+id/detailed_toolbar_layout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:contentScrim="?attr/colorPrimary">
-                <!--app:layout_scrollFlags="scroll|exitUntilCollapsed"-->
-
-                <!--视频布局-->
-                <include
-                    android:id="@+id/tv"
-                    layout="@layout/layout_video"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-                <!--app:layout_collapseMode="parallax"-->
+                android:fitsSystemWindows="true"
+                app:contentScrim="?attr/colorPrimary"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed"
+                >
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/banner"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:overScrollMode="never"
+                        android:scrollbars="none"
+                        />
 
             </android.support.design.widget.CollapsingToolbarLayout>
 
         </android.support.design.widget.AppBarLayout>
 
-
-        <android.support.v4.widget.NestedScrollView
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:overScrollMode="never"
             android:scrollbars="none"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            >
-            <!--底部信息-->
-            <include
-                layout="@layout/layout_video_explain"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
-        </android.support.v4.widget.NestedScrollView>
+            />
 
     </android.support.design.widget.CoordinatorLayout>
 </layout>

@@ -1,18 +1,9 @@
-package com.fengchen.ciyuan2;
+package com.fengchen.ciyuan2.a_movie;
 
 import android.app.Service;
 import android.content.Intent;
-import android.content.ServiceConnection;
-import android.media.MediaPlayer;
-import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
-
-import java.io.Serializable;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import io.reactivex.Observable;
 
 /**
  * ===========================================================

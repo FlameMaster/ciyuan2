@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data class="ItemInsetBD">
+
+    </data>
+
+    <!--<android.support.v7.widget.CardView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginHorizontal="8dp"-->
+        <!--android:layout_marginVertical="8dp"-->
+        <!--app:cardCornerRadius="8dp"-->
+        <!--app:cardElevation="8dp"-->
+        <!--&gt;-->
+        <!--android:clickable="true"-->
+        <!--android:foreground="?android:attr/selectableItemBackground"-->
+        <!--app:cardPreventCornerOverlap="false"-->
+        <!--app:cardUseCompatPadding="true"-->
+        <!--tools:targetApi="lollipop"-->
+
+        <!--<com.fengchen.ciyuan2.wiget.RoundLayout-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="wrap_content"-->
+        <!--android:layout_marginHorizontal="4dp"-->
+        <!--android:layout_marginVertical="8dp"-->
+        <!--android:background="@color/white"-->
+        <!--android:elevation="8dp"-->
+        <!--app:corner_radius="8dp"-->
+        <!--&gt;-->
+        <!--app:corner_radius="8dp"-->
+        <!--android:background="@drawable/bg_radius8"-->
+        <!--系统自带阴影-->
+        <!--android:background="@drawable/abc_popup_background_mtrl_mult"-->
+
+        <ImageView
+            android:id="@+id/img"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/fairytail"
+            android:elevation="8dp"
+            android:background="@color/white"
+            android:layout_marginHorizontal="4dp"
+            android:layout_marginVertical="4dp"
+            />
+        <!--app:layout_constraintBottom_toBottomOf="parent"-->
+        <!--app:layout_constraintLeft_toLeftOf="parent"-->
+        <!--app:layout_constraintRight_toRightOf="parent"-->
+        <!--app:layout_constraintTop_toTopOf="parent"-->
+
+        <!--</com.fengchen.ciyuan2.wiget.RoundLayout>-->
+    <!--</android.support.v7.widget.CardView>-->
+</layout>

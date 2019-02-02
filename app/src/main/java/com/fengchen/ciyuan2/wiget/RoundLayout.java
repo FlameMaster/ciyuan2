@@ -1,4 +1,4 @@
-package com.fengchen.ciyuan2;
+package com.fengchen.ciyuan2.wiget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -7,7 +7,11 @@ import android.graphics.Path;
 import android.graphics.RectF;
 import android.support.constraint.ConstraintLayout;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.ViewGroup;
 import android.widget.RelativeLayout;
+
+import com.fengchen.ciyuan2.R;
 
 /**
  * ===============================================
@@ -42,6 +46,11 @@ public class RoundLayout extends ConstraintLayout {
         typedArray.recycle();
 
         init();
+    }
+
+    @Override
+    public void setLayoutParams(ViewGroup.LayoutParams params) {
+        super.setLayoutParams(params);
     }
 
     private void init() {

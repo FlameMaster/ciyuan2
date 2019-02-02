@@ -1,10 +1,12 @@
-package com.fengchen.ciyuan2;
+package com.fengchen.ciyuan2.a_movie;
 
 import android.media.MediaPlayer;
-import android.media.MediaTimestamp;
 import android.os.Binder;
 import android.util.Log;
 import android.view.SurfaceHolder;
+
+import com.fengchen.light.model.EventMessage;
+import com.fengchen.light.rxjava.RxBus;
 
 import java.io.Serializable;
 import java.util.List;
@@ -80,9 +82,7 @@ public class MediaBinder extends Binder implements Serializable,MediaPlayer.OnCo
         }
     }
 
-    /**
-     * 如果正在播放则返回true
-     */
+    /*如果正在播放则返回true*/
     public boolean isPlaying() {
         return mMediaPlayer.isPlaying();
     }
@@ -94,8 +94,9 @@ public class MediaBinder extends Binder implements Serializable,MediaPlayer.OnCo
         if (position < 0) position = mMedias.size() - 1;
         else if (position >= mMedias.size()) position = 0;
 
-        //通知ui变更
         nowMediaPosition = position;
+        //通知ui变更
+        RxBus.get().post(new EventMessage(EventMessage.EventType.ALL,"tv_play",mMedias.get(position)));
 
         try {
             mMediaPlayer.reset();//把各项参数恢复到初始状态
@@ -113,6 +114,7 @@ public class MediaBinder extends Binder implements Serializable,MediaPlayer.OnCo
     public void pause() {
         if (mMediaPlayer != null && isPlaying()) {
             //通知ui变更
+            RxBus.get().post(new EventMessage(EventMessage.EventType.ALL,"tv_pause"));
             mMediaPlayer.pause();
         }
     }
@@ -121,6 +123,7 @@ public class MediaBinder extends Binder implements Serializable,MediaPlayer.OnCo
     public void start() {
         if (mMediaPlayer != null && !isPlaying()) {
             //通知ui变更
+            RxBus.get().post(new EventMessage(EventMessage.EventType.ALL,"tv_start"));
             mMediaPlayer.start();
         }
     }
@@ -131,6 +134,7 @@ public class MediaBinder extends Binder implements Serializable,MediaPlayer.OnCo
             //通知ui变更
             mMediaPlayer.stop();
             try {
+                RxBus.get().post(new EventMessage(EventMessage.EventType.ALL,"tv_stop"));
                 mMediaPlayer.prepare(); // 在调用stop后如果需要再次通过start进行播放,需要之前调用prepare函数
             } catch (Exception e) {
                 e.printStackTrace();

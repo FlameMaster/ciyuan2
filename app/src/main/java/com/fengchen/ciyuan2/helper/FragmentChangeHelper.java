@@ -1,4 +1,4 @@
-package com.fengchen.ciyuan2;
+package com.fengchen.ciyuan2.helper;
 
 import android.os.Build;
 import android.support.v4.app.FragmentManager;
@@ -6,7 +6,10 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.util.ArrayMap;
 import android.transition.Explode;
 import android.transition.Slide;
-import android.view.Gravity;
+
+import com.fengchen.ciyuan2.a_home.HomeFragment;
+import com.fengchen.ciyuan2.a_inset.InsetFragment;
+import com.fengchen.ciyuan2.a_movie.MovieFragment;
 import com.fengchen.light.view.BaseFragment;
 import com.fengchen.light.utils.StringUtil;
 
@@ -27,11 +30,11 @@ import com.fengchen.light.utils.StringUtil;
 public class FragmentChangeHelper {
 
     /*主页*/
-    public final static String TAG_MAIN_0= "0";
-    /*商店*/
-    public final static String TAG_MAIN_1 = "1";
-    /*小窝*/
-    public final static String TAG_MAIN_2 = "2";
+    public final static String TAG_MAIN_HOME= "0";
+    /*番剧*/
+    public final static String TAG_MAIN_MOVIE = "1";
+    /*直播*/
+    public final static String TAG_MAIN_INSET = "2";
 
 
     /*fragment集合*/
@@ -64,14 +67,14 @@ public class FragmentChangeHelper {
         if (!mFragmets.containsKey(tag)) {
             BaseFragment fragment = null;
             switch (tag) {
-                case TAG_MAIN_0:
+                case TAG_MAIN_HOME:
                     fragment = new HomeFragment();
                     break;
-                case TAG_MAIN_1:
-                    fragment = new HomeFragment();
+                case TAG_MAIN_MOVIE:
+                    fragment = new MovieFragment();
                     break;
-                case TAG_MAIN_2:
-                    fragment = new HomeFragment();
+                case TAG_MAIN_INSET:
+                    fragment = new InsetFragment();
                     break;
             }
             //添加到集合
@@ -98,7 +101,7 @@ public class FragmentChangeHelper {
         /*5.0转场动画*/
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             // Defines enter transition for all fragment views
-            Slide slideTransition = new Slide(Gravity.RIGHT);
+            Slide slideTransition = new Slide();
             slideTransition.setDuration(500);
             fragment.setEnterTransition(slideTransition);
             fragment.setSharedElementEnterTransition(new Explode());

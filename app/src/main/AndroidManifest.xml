@@ -11,7 +11,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"
+        <activity android:name=".a_home.MainActivity"
                   android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -24,14 +24,14 @@
                 <data android:scheme="ciyuan2" />  <!-- wap中声明的scheme -->
             </intent-filter>
         </activity>
-        <activity android:name=".VideoActivity"
+        <activity android:name=".a_movie.VideoActivity"
                   android:screenOrientation="portrait"
                   android:configChanges="orientation|keyboardHidden|screenSize"
         />
         <!--切屏不会重新调用各个生命周期，只会执行onConfigurationChanged方法-->
         <!--android:configChanges=”orientation” 切屏还是会重新调用各个生命周期，切横、竖屏时只会执行一次-->
 
-        <service android:name=".MediaPlayerService"/>
+        <service android:name=".a_movie.MediaPlayerService"/>
 
 
 

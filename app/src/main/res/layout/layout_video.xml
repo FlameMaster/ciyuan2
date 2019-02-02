@@ -1,0 +1,167 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data parent="@">
+
+    </data>
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <!--显示器-->
+        <SurfaceView
+            android:id="@+id/tv_show"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            app:layout_constraintDimensionRatio="H,16:9"
+            app:layout_constraintTop_toTopOf="parent"
+            android:onClick="showSurfaceClick"
+            />
+
+        <!--被隐藏的组-->
+        <!--android:visibility="gone"-->
+        <android.support.constraint.Group
+            android:id="@+id/surface_click"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:visibility="gone"
+            app:constraint_referenced_ids="tv_top,tv_bottom,back,tv_title,tv_change,tv_play,tv_progress,tv_progress_text,tv_progress_max_text"/>
+
+        <!--上半部分-->
+        <View
+            android:id="@+id/tv_top"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:layout_marginTop="24dp"
+            android:background="#3000"
+            app:layout_constraintTop_toTopOf="parent"
+            />
+
+        <!--下半部分-->
+        <View
+            android:id="@+id/tv_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="42dp"
+            android:background="#3000"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_show"
+            />
+
+        <!--返回-->
+        <ImageView
+            android:id="@+id/back"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:padding="12dp"
+            android:src="@drawable/ic_back"
+            app:layout_constraintDimensionRatio="H,1:1"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_top"
+            app:layout_constraintTop_toTopOf="@+id/tv_top"
+            app:layout_constraintLeft_toLeftOf="@+id/tv_top"
+            android:onClick="back"
+            />
+        <!--视频标题-->
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:includeFontPadding="false"
+            android:textSize="16sp"
+            android:gravity="center_vertical|left"
+            android:textColor="@color/white"
+            android:text="视频标题"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_top"
+            app:layout_constraintTop_toTopOf="@+id/tv_top"
+            app:layout_constraintLeft_toRightOf="@+id/back"
+            app:layout_constraintRight_toRightOf="@+id/tv_top"
+            android:paddingHorizontal="12dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:singleLine="true"
+            />
+
+        <!--全屏切换-->
+        <ImageView
+            android:id="@+id/tv_change"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:padding="12dp"
+            android:src="@drawable/ic_tv_chjangetv"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_bottom"
+            app:layout_constraintDimensionRatio="H,1:1"
+            app:layout_constraintRight_toRightOf="@+id/tv_bottom"
+            app:layout_constraintTop_toTopOf="@+id/tv_bottom"
+            android:onClick="changeTV"
+            />
+
+        <!--播放/暂停-->
+        <ImageView
+            android:id="@+id/tv_play"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:padding="12dp"
+            android:src="@drawable/ic_tv_play"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_bottom"
+            app:layout_constraintDimensionRatio="H,1:1"
+            app:layout_constraintTop_toTopOf="@+id/tv_bottom"
+            app:layout_constraintLeft_toLeftOf="@+id/tv_bottom"
+            android:onClick="changePlay"
+            />
+
+        <!--时间控制条-->
+        <SeekBar
+            android:id="@+id/tv_progress"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:indeterminateDrawable="@android:drawable/progress_indeterminate_horizontal"
+            android:indeterminateOnly="false"
+            android:max="100"
+            android:maxHeight="2dp"
+            android:minHeight="2dp"
+            android:progress="70"
+            android:progressDrawable="@drawable/progressbar_miniplayer"
+            android:thumb="@drawable/shape_minplayer_bar"
+            android:thumbOffset="0dp"
+            app:layout_constraintLeft_toRightOf="@+id/tv_play"
+            app:layout_constraintRight_toLeftOf="@+id/tv_change"
+            app:layout_constraintTop_toTopOf="@+id/tv_bottom"
+            android:layout_marginTop="8dp"
+            />
+
+        <!--时间进度条-->
+        <TextView
+            android:id="@+id/tv_progress_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="01:29"
+            android:textColor="@color/white"
+            android:textSize="10sp"
+            android:layout_below="@id/tv_progress"
+            android:includeFontPadding="false"
+            app:layout_constraintLeft_toLeftOf="@+id/tv_progress"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_bottom"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="16dp"
+            />
+
+        <!--时间进度条-->
+        <TextView
+            android:id="@+id/tv_progress_max_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="04:13"
+            android:textColor="@color/white"
+            android:textSize="10sp"
+            android:layout_below="@id/tv_progress"
+            android:layout_alignParentRight="true"
+            android:includeFontPadding="false"
+            app:layout_constraintRight_toRightOf="@+id/tv_progress"
+            app:layout_constraintBottom_toBottomOf="@+id/tv_bottom"
+            android:layout_marginBottom="8dp"
+            android:layout_marginRight="16dp"
+            />
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

@@ -7,14 +7,16 @@
 
         <variable
             name="ghG"
-            type="com.fengchen.ciyuan2.Ghg"/>
+            type="com.fengchen.ciyuan2.bean.Ghg"/>
+
+        <import type="com.fengchen.ciyuan2.utils.DataBindingUtils"/>
 
     </data>
 
-    <com.fengchen.ciyuan2.RoundLayout
+    <com.fengchen.ciyuan2.wiget.RoundLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#399ab2"
+        android:background="@color/colorPrimary"
         app:corner_radius="16dp"
         >
 
@@ -22,10 +24,7 @@
         <FrameLayout
             android:id="@+id/root"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toTopOf="@+id/tabhost"
-            app:layout_constraintTop_toTopOf="parent"
-            android:background="@color/white"
+            android:layout_height="match_parent"
             />
 
         <!--底部导航栏-->
@@ -33,55 +32,68 @@
             android:id="@+id/tabhost"
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
-            android:background="@color/white"
-            android:gravity="center"
+            android:background="@drawable/bg_radius"
+            android:gravity="bottom"
             android:orientation="horizontal"
             app:layout_constraintBottom_toBottomOf="parent"
+            android:elevation="8dp"
+            android:paddingBottom="6dp"
+            android:layout_marginHorizontal="24dp"
             >
 
             <RadioButton
-                android:id="@+id/tab_0"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:id="@+id/tab_home"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/selector_tab_bg_main"
-                android:onClick="@{() -> ghG.test()}"
                 android:button="@null"
-                android:includeFontPadding="false"
                 android:checked="true"
+                android:drawableTop="@drawable/selector_tab_home_main"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:onClick="@{() -> ghG.test()}"
+                android:text="首页"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                app:textDrawableHeight="@{26}"
+                app:textDrawableWidth="@{26}"
                 />
+            <!--android:background="@drawable/selector_tab_home_main"-->
 
             <RadioButton
-                android:id="@+id/tab_1"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:id="@+id/tab_movie"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/selector_tab_bg_main"
+                android:button="@null"
+                android:drawableTop="@drawable/selector_tab_movie_main"
+                android:gravity="center"
+                android:includeFontPadding="false"
                 android:onClick="@{ghG::test}"
-                android:button="@null"
-                android:includeFontPadding="false"
+                android:text="番剧"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                app:textDrawableHeight="@{24}"
+                app:textDrawableWidth="@{24}"
                 />
 
             <RadioButton
-                android:id="@+id/tab_2"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:id="@+id/tab_inset"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:background="@drawable/selector_tab_bg_main"
-                android:onClick="@{(view)->ghG.test(view,2)}"
                 android:button="@null"
+                android:drawableTop="@drawable/selector_tab_inset_main"
+                android:gravity="center"
                 android:includeFontPadding="false"
+                android:onClick="@{(view)->ghG.test(view,2)}"
+                android:text="插画"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                app:textDrawableHeight="@{17}"
+                app:textDrawableWidth="@{21}"
                 />
         </RadioGroup>
 
-        <ImageView
-            android:id="@+id/test"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            app:layout_constraintTop_toTopOf="parent"
-            android:scaleType="centerCrop"
-            android:fitsSystemWindows="true"
-            />
-
-    </com.fengchen.ciyuan2.RoundLayout>
+    </com.fengchen.ciyuan2.wiget.RoundLayout>
 </layout>

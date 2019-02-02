@@ -1,7 +1,4 @@
-package com.fengchen.ciyuan2;
-
-import android.graphics.Color;
-import android.view.View;
+package com.fengchen.ciyuan2.a_movie;
 
 /**
  * ===========================================================
@@ -11,23 +8,24 @@ import android.view.View;
  * <p>
  * = 地 点：中 国 北 京 市 朝 阳 区
  * <p>
- * = 时 间：2018/12/4 14:43
+ * = 时 间：2018/12/10 14:56
  * <p>
  * = 分 类 说 明：
  * ============================================================
  */
-public class Ghg {
+public class MediaModel {
+    /*路径*/
+    private String url;
 
-    public void test(View view){
-        view.setEnabled(true);
+    public MediaModel(String url) {
+        this.url = url;
     }
 
-    public void test(){
-
+    public String getUrl() {
+        return url;
     }
 
-    public void test(View view,int op){
-
+    public void setUrl(String url) {
+        this.url = url;
     }
-
 }

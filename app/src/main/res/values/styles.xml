@@ -3,11 +3,11 @@
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- colorPrimary 定义 ActionBar 的背景色 -->
-        <item name="colorPrimary">#399ab2</item>
+        <item name="colorPrimary">@color/colorPrimary</item>
         <!-- colorPrimaryDark 定义状态栏的背景色 -->
-        <item name="colorPrimaryDark">#399ab2</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <!-- colorAccent 为 colorControlActivated 的默认值，该值用户显示控件的高亮状态 -->
-        <item name="colorAccent">#399ab2</item>
+        <item name="colorAccent">@color/colorAccent</item>
         <!-- app背景色 -->
         <item name="android:windowBackground">@color/transparent</item>
         <!-- textColor 定义标题文字的颜色 -->
@@ -19,6 +19,19 @@
         <!--<item name="android:textColorSecondary">@color/white</item>-->
     </style>
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+    </style>
+    <!--购物弹窗-->
+    <style name="BuyDialogStyle" parent="android:Theme.Dialog">
+        <!--<item name="android:windowBackground">@color/red</item>&lt;!&ndash;背景透明&ndash;&gt;-->
+        <item name="android:windowBackground">@color/transparent</item><!--背景透明-->
+        <!--<item name="android:padding">1dp</item>-->
+        <!-- Dialog以外的区域模糊效果 -->
+        <item name="android:backgroundDimEnabled">false</item>
+        <!-- 无标题 -->
+        <item name="android:windowNoTitle">true</item>
+
+        <item name="android:elevation">8dp</item>
+        <item name="android:radius">8dp</item>
     </style>
 
 </resources>

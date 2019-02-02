@@ -1,6 +1,5 @@
-package com.fengchen.ciyuan2;
+package com.fengchen.ciyuan2.a_home;
 
-import android.arch.lifecycle.MutableLiveData;
 import android.content.res.Resources;
 import android.graphics.Point;
 import android.os.Build;
@@ -14,7 +13,11 @@ import android.view.ViewConfiguration;
 import android.view.WindowManager;
 import android.widget.RadioGroup;
 
+import com.fengchen.ciyuan2.R;
+import com.fengchen.ciyuan2.bean.Ghg;
 import com.fengchen.ciyuan2.databinding.ActivityMainBinding;
+import com.fengchen.ciyuan2.helper.FragmentChangeHelper;
+import com.fengchen.ciyuan2.wiget.RoundLayout;
 import com.fengchen.light.view.BaseActivity;
 import com.fengchen.light.utils.FCUtils;
 import com.fengchen.light.utils.StringUtil;
@@ -64,7 +67,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
 
         mFragmentChangeHelper = FragmentChangeHelper
                 .getChangeHelper(getSupportFragmentManager());
-        fragmentTag = FragmentChangeHelper.TAG_MAIN_0;
+        fragmentTag = FragmentChangeHelper.TAG_MAIN_HOME;
         //切换页面
         if (StringUtil.noNull(fragmentTag))
             mFragmentChangeHelper.changeFragment(
@@ -76,14 +79,14 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
             @Override
             public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
                 switch (checkedId) {
-                    case R.id.tab_0:
-                        fragmentTag = FragmentChangeHelper.TAG_MAIN_0;
+                    case R.id.tab_home:
+                        fragmentTag = FragmentChangeHelper.TAG_MAIN_HOME;
                         break;
-                    case R.id.tab_1:
-                        fragmentTag = FragmentChangeHelper.TAG_MAIN_1;
+                    case R.id.tab_movie:
+                        fragmentTag = FragmentChangeHelper.TAG_MAIN_MOVIE;
                         break;
-                    case R.id.tab_2:
-                        fragmentTag = FragmentChangeHelper.TAG_MAIN_2;
+                    case R.id.tab_inset:
+                        fragmentTag = FragmentChangeHelper.TAG_MAIN_INSET;
                         break;
                 }
 

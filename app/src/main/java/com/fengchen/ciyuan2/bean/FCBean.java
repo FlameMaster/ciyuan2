@@ -1,4 +1,4 @@
-package com.fengchen.ciyuan2;
+package com.fengchen.ciyuan2.bean;
 
 import android.arch.lifecycle.MutableLiveData;
 import android.databinding.ObservableBoolean;

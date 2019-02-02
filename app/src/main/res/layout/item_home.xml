@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data class="ItemHomeBD">
+
+    </data>
+    <com.fengchen.ciyuan2.wiget.RoundLayout
+        android:layout_width="match_parent"
+        android:layout_height="160dp"
+        app:corner_radius="8dp"
+        android:elevation="8dp"
+        android:background="@drawable/bg_radius8"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="16dp"
+        >
+        <!--android:background="@drawable/bg_radius8"-->
+
+
+        <ImageView
+            android:id="@+id/img"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop"
+            />
+
+    </com.fengchen.ciyuan2.wiget.RoundLayout>
+</layout>

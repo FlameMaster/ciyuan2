@@ -342,7 +342,8 @@ public abstract class BaseRecyclerAdapter<T, VH extends BaseHolder> extends Recy
         if (getHeaderSize() > 0 && lp != null && lp instanceof StaggeredGridLayoutManager.LayoutParams) {
             StaggeredGridLayoutManager.LayoutParams p = (StaggeredGridLayoutManager.LayoutParams) lp;
             boolean fullSpan = false;
-            if (holder.getLayoutPosition() < getHeaderSize()) fullSpan = true;//头布局
+            if (holder.getLayoutPosition() < getHeaderSize())
+                fullSpan = true;//头布局
             if (holder.getLayoutPosition() >= getHeaderSize() + getDatas().size() + getInsertSize())
                 fullSpan = true;//尾布局
             p.setFullSpan(fullSpan);

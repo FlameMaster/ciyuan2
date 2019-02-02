@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data class="ItemAnimationBD">
+
+    </data>
+
+    <android.support.constraint.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginVertical="4dp"
+        android:background="#3fff"
+        android:elevation="8dp"
+        >
+
+        <ImageView
+            android:id="@+id/img_cover"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_margin="8dp"
+            android:scaleType="centerCrop"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="H,4:5"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintWidth_percent="0.3"
+            />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="8dp"
+            android:ellipsize="end"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:text="标题标题标题标题标题标题"
+            android:textColor="#009a33"
+            android:textSize="16sp"
+            app:layout_constraintLeft_toRightOf="@+id/img_cover"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/img_cover"
+            />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:ellipsize="end"
+            android:gravity="top|left"
+            android:includeFontPadding="false"
+            android:maxLines="5"
+            android:text="爆裂吧现实，粉碎吧精神，放逐这个世界，遵从血之盟约，吾在此召唤汝，夜之女王！\n
+立誓今生尊你为王，用我热血为你封疆。\n
+无论是现今还是以前我所保护的都是一样，从来就没有变过啊!!!\n\n
+隐约雷鸣 阴霾天空 即使天无雨 我亦留此地。\n"
+            android:textColor="#ddd"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toTopOf="@+id/date"
+            app:layout_constraintLeft_toLeftOf="@+id/title"
+            app:layout_constraintRight_toRightOf="@id/title"
+            app:layout_constraintTop_toBottomOf="@+id/title"
+            android:layout_marginVertical="6dp"
+            />
+
+        <TextView
+            android:id="@+id/date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:gravity="top|left"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:text="2019/02/01"
+            android:textColor="@color/test3"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/img_cover"
+            app:layout_constraintLeft_toLeftOf="@+id/title"
+            />
+
+        <TextView
+            android:id="@+id/user_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:gravity="top|right"
+            android:includeFontPadding="false"
+            android:maxLines="1"
+            android:text="提供:\t拜拜风尘子"
+            android:textColor="@color/test3"
+            android:textSize="14sp"
+            app:layout_constraintBottom_toBottomOf="@+id/date"
+            app:layout_constraintLeft_toRightOf="@+id/date"
+            app:layout_constraintRight_toRightOf="@+id/title"
+            />
+
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

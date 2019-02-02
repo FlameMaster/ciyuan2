@@ -3,50 +3,110 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data class="FragmentHomeBinding">
+    <data class="FgtHomeBD">
 
-        <variable
-            name="fc"
-            type="com.fengchen.ciyuan2.FCBean"/>
     </data>
-    <android.support.design.widget.CoordinatorLayout
+
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        >
+        android:layout_height="match_parent">
 
-        <!--appbarlayout下的子view可以渗透状态栏-->
-        <android.support.design.widget.AppBarLayout
-            android:id="@+id/detailed_bar"
-            android:layout_width="match_parent"
-            android:layout_height="200dp"
-            android:theme="@style/AppTheme.AppBarOverlay">
+        <!--fillViewport撑满全屏-->
+        <android.support.v4.widget.NestedScrollView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:fillViewport="true"
+            android:orientation="vertical"
+            android:overScrollMode="never"
+            android:scrollbars="none"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            >
 
-            <!--collapsingtoolbar下的子view不能越过菜单栏-->
-            <android.support.design.widget.CollapsingToolbarLayout
-                android:id="@+id/detailed_toolbar_layout"
+            <android.support.constraint.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fitsSystemWindows="true"
-                app:contentScrim="?attr/colorPrimary"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed"
-                >
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/banner"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        />
+                android:layout_height="wrap_content">
 
-            </android.support.design.widget.CollapsingToolbarLayout>
+                <!--<com.fengchen.ciyuan2.wiget.DiffusionView-->
+                <!--android:id="@+id/banner"-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="0dp"-->
+                <!--android:background="#0fff"-->
+                <!--app:shadow_color="#4c194f90"-->
+                <!--app:shadow_centre_color="@color/white"-->
+                <!--app:diffusion_corner_radius="16dp"-->
+                <!--app:shadow_radius="16dp"-->
+                <!--android:padding="16dp"-->
+                <!--app:layout_constraintTop_toBottomOf="@+id/bar"-->
+                <!--app:layout_constraintDimensionRatio="H,1:1"-->
+                <!--/>-->
 
-        </android.support.design.widget.AppBarLayout>
+                <com.fengchen.ciyuan2.wiget.RoundImageView
+                    android:id="@+id/banner"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="76dp"
+                    android:background="@drawable/bg_radius16"
+                    android:elevation="8dp"
+                    android:scaleType="centerCrop"
+                    android:src="@mipmap/fairytail"
+                    app:corner_radius="16dp"
+                    app:layout_constraintDimensionRatio="H,4:3"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/list"
+                <!--分类导航-->
+                <include
+                    android:id="@+id/wizard"
+                    layout="@layout/top_home"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/banner"
+                    />
+
+                <!--推荐-->
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recommend"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:overScrollMode="never"
+                    android:scrollbars="none"
+                    app:layout_constraintTop_toBottomOf="@+id/movie_text"
+                    />
+
+                <!--主页列表-->
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/list"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:overScrollMode="never"
+                    android:scrollbars="none"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/recommend"
+                    />
+
+            </android.support.constraint.ConstraintLayout>
+        </android.support.v4.widget.NestedScrollView>
+
+        <!--工具栏-->
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/bar"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="#eeeeee"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"
+            android:layout_height="?attr/actionBarSize"
+            android:layout_marginTop="24dp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:navigationIcon="@drawable/ic_back"
+            app:title="二刺猿"
+            app:titleTextColor="@color/white"
             />
 
-    </android.support.design.widget.CoordinatorLayout>
+    </android.support.constraint.ConstraintLayout>
 </layout>

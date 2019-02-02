@@ -46,7 +46,7 @@ dependencies {
     //缓存
     api "com.jakewharton:disklrucache:$disklrucacheVersion"
     //图片加载
-//    api "com.github.bumptech.glide:glide:$glideVersion"
-//    annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
+    api "com.github.bumptech.glide:glide:$glideVersion"
+    annotationProcessor "com.github.bumptech.glide:compiler:$glideVersion"
     implementation 'org.jetbrains:annotations-java5:15.0'
 }

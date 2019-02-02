@@ -207,4 +207,15 @@ public class StringUtil {
     public static boolean equals(@NonNull String oldS, @NonNull String newS) {
         return  oldS.equals(newS);
     }
+
+    /*判断url地址是否是图片*/
+    public static boolean isImageUrl(String url) {
+        if (!noNull(url)) return false;
+        else if (url.toLowerCase().contains(".jpg")
+                | url.toLowerCase().contains(".png")
+                | url.toLowerCase().contains(".jpeg")
+                | url.toLowerCase().contains(".gif")
+                | url.toLowerCase().contains(".bmp")) return true;
+        return false;
+    }
 }
