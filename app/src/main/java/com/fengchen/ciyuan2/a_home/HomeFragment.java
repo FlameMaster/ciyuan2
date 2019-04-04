@@ -1,10 +1,30 @@
 package com.fengchen.ciyuan2.a_home;
 
+import android.animation.Animator;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.databinding.ViewDataBinding;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.support.annotation.NonNull;
+import android.support.v4.widget.NestedScrollView;
+import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewAnimationUtils;
+import android.view.animation.AccelerateInterpolator;
+import android.widget.ImageView;
 
+import com.fengchen.ciyuan2.bean.MainMovie;
+import com.fengchen.ciyuan2.bean.MediaModel;
+import com.fengchen.ciyuan2.bean.Movie;
+import com.fengchen.ciyuan2.bean.MovieItem;
+import com.fengchen.ciyuan2.net.CYEntity;
+import com.fengchen.ciyuan2.net.CYListEntity;
+import com.fengchen.ciyuan2.net.LoadUtils;
 import com.fengchen.ciyuan2.utils.DataBindingUtils;
 import com.fengchen.ciyuan2.helper.ItemFullSnapHelper;
 import com.fengchen.ciyuan2.R;
@@ -12,14 +32,24 @@ import com.fengchen.ciyuan2.a_movie.VideoActivity;
 import com.fengchen.ciyuan2.databinding.FgtHomeBD;
 import com.fengchen.ciyuan2.databinding.ItemHomeBD;
 import com.fengchen.ciyuan2.databinding.ItemHomeBannerBD;
+import com.fengchen.ciyuan2.wiget.ParallaxLayout;
+import com.fengchen.ciyuan2.wiget.RoundGifImageView;
+import com.fengchen.ciyuan2.wiget.RoundLayout;
 import com.fengchen.light.adapter.BaseHolder;
 import com.fengchen.light.adapter.BaseRecyclerAdapter;
 import com.fengchen.light.model.ImageParameter;
 import com.fengchen.light.utils.FCUtils;
+import com.fengchen.light.utils.IOUtils;
+import com.fengchen.light.utils.StringUtil;
 import com.fengchen.light.view.BaseFragment;
+import com.google.gson.reflect.TypeToken;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observable;
+import io.reactivex.ObservableOnSubscribe;
 
 /**
  * ===========================================================
@@ -46,25 +76,12 @@ public class HomeFragment extends BaseFragment<FgtHomeBD> {
     @Override
     protected void initFragment() {
 
-        ImageParameter imageParameter = new ImageParameter(
-                url,
-                1280, 720);
-
         //初始化推荐列表
         new ItemFullSnapHelper().attachToRecyclerView(getViewDataBinding().recommend);
         getViewDataBinding().recommend.setLayoutManager(new LinearLayoutManager(FCUtils.getContext(),
                 LinearLayoutManager.HORIZONTAL, false));
         mRecommendAdapter = new RecommendAdapter();
         getViewDataBinding().recommend.setAdapter(mRecommendAdapter);
-        List<ImageParameter> list = new ArrayList<>();
-        list.add(imageParameter);
-        list.add(imageParameter);
-        list.add(imageParameter);
-        list.add(imageParameter);
-        list.add(imageParameter);
-        mRecommendAdapter.addDatas(list);
-
-
         //初始化条目列表
         getViewDataBinding().list
                 .setLayoutManager(new LinearLayoutManager(FCUtils.getContext()));
@@ -74,14 +91,26 @@ public class HomeFragment extends BaseFragment<FgtHomeBD> {
 
         List<ImageParameter> list1 = new ArrayList<>();
         for (int i = 0; i < 20; i++)
-            list1.add(imageParameter);
+            list1.add(new ImageParameter(url2, FCUtils.dp2px(360), FCUtils.dp2px(160)));
         mListAdapter.addDatas(list1);
 
+        mRecommendAdapter.setOnItemClickListener(
+                (BaseRecyclerAdapter.OnItemClickListener<MovieItem>) (viewHolder, position, data) -> {
+                    Intent intent = new Intent(FCUtils.getContext(), VideoActivity.class);
+                    intent.putExtra("dataSource", data.getDataSource());
+                    intent.putExtra("dataPath", data.getDataPath());
+                    startActivity(intent);
+                });
         mListAdapter.setOnItemClickListener((viewHolder, position, data) -> {
-            Intent intent = new Intent(FCUtils.getContext(), VideoActivity.class);
-            startActivity(intent);
         });
+        initData();
 
+        getViewDataBinding().banner.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                testC(v);
+            }
+        });
     }
 
     @Override
@@ -89,19 +118,47 @@ public class HomeFragment extends BaseFragment<FgtHomeBD> {
         return R.layout.fragment_home;
     }
 
+    public void testC(View view) {
+        getViewDataBinding().recommend.getChildAt(0).setDrawingCacheEnabled(true);
+        Bitmap drawingCache = Bitmap.createBitmap(getViewDataBinding().recommend.getChildAt(0).getDrawingCache());
+        ((ImageView)view).setImageBitmap(drawingCache);
+    }
+
+
+    @SuppressLint("CheckResult")
+    private void initData() {
+        getViewDataBinding().setBannerUrl("https://b-ssl.duitang.com/uploads/item/201801/08/20180108181057_VSyJF.gif");
+//        getViewDataBinding().setBannerUrl("http://img2.100bt.com/upload/ttq/20140606/1402032172085.gif");
+
+        Observable.create((ObservableOnSubscribe<MainMovie>) emitter -> {
+            MainMovie entity = LoadUtils.getData(
+                    MovieItem.SOURCE_ASSETS, "test_main_movie",
+                    new TypeToken<CYEntity<MainMovie>>() {
+                    });
+            emitter.onNext(entity);
+            emitter.onComplete();
+        })
+                .compose(IOUtils.setThread())
+                .subscribe(entity -> {
+                    Log.e("加载结果", "entity=" + entity.getList().size());
+                    if (entity != null) {
+                        if (entity.getRecommend() != null)
+                            mRecommendAdapter.addDatas(entity.getRecommend());
+                    }
+                });
+    }
 
     /*推荐适配器*/
-    private class RecommendAdapter extends BaseRecyclerAdapter<ImageParameter, BaseHolder<ItemHomeBannerBD>> {
+    private class RecommendAdapter extends BaseRecyclerAdapter<MovieItem, BaseHolder<ItemHomeBannerBD>> {
         @Override
-        public void bindData(BaseHolder<ItemHomeBannerBD> viewHolder, int position, ImageParameter data) {
+        public void bindData(BaseHolder<ItemHomeBannerBD> viewHolder, int position, MovieItem data) {
             if (position == getDatas().size() - 1) {
                 RecyclerView.LayoutParams lp = (RecyclerView.LayoutParams) viewHolder.itemView.getLayoutParams();
-                    lp.rightMargin = lp.leftMargin;
+                lp.rightMargin = lp.leftMargin;
                 viewHolder.itemView.setLayoutParams(lp);
             }
-
-            DataBindingUtils.loadImageUrl(viewHolder.getBinding().img,data.getUrl(),
-                    viewHolder.getBinding().img.getWidth(),viewHolder.getBinding().img.getHeight());
+            viewHolder.getBinding().setRecommend(data);
+            viewHolder.getBinding().setTop(position + 1);
         }
 
         @Override
@@ -131,8 +188,20 @@ public class HomeFragment extends BaseFragment<FgtHomeBD> {
 //                viewHolder.itemView.setLayoutParams(lp);
 //            }
 
-            DataBindingUtils.loadImageUrl(viewHolder.getBinding().img,url2,
-                    viewHolder.getBinding().img.getWidth(),viewHolder.getBinding().img.getHeight());
+//            if (position == 1) {
+//                data.setUrl("https://b-ssl.duitang.com/uploads/blog/201407/19/20140719173322_arNuS.jpeg");
+//                data.setHeight(FCUtils.dp2px(320));
+//                getViewDataBinding().container.setOnScrollChangeListener(
+//                        (NestedScrollView.OnScrollChangeListener) (nestedScrollView, i, i1, i2, i3) ->
+//                                viewHolder.getBinding().root.moveChild(getViewDataBinding().getRoot().getHeight()));
+//                ParallaxLayout.LayoutParams lp = (ParallaxLayout.LayoutParams)
+//                        viewHolder.getBinding().img.getLayoutParams();
+//                lp.height = FCUtils.dp2px(320);
+//                viewHolder.getBinding().img.setLayoutParams(lp);
+//            }
+
+            DataBindingUtils.loadImageUrl(viewHolder.getBinding().img, data.getUrl(),
+                    data.getWidth(), data.getHeight());
         }
 
         @Override

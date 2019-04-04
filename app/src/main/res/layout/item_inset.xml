@@ -6,6 +6,15 @@
 
     <data class="ItemInsetBD">
 
+        <variable
+            name="item"
+            type="com.fengchen.ciyuan2.bean.InsetItem"/>
+        <variable
+            name="width"
+            type="Integer"/>
+        <variable
+            name="height"
+            type="Integer"/>
     </data>
 
     <!--<android.support.v7.widget.CardView-->
@@ -36,16 +45,20 @@
         <!--系统自带阴影-->
         <!--android:background="@drawable/abc_popup_background_mtrl_mult"-->
 
-        <ImageView
+        <com.fengchen.ciyuan2.wiget.RoundGifImageView
             android:id="@+id/img"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:scaleType="centerCrop"
+            android:scaleType="fitXY"
             android:src="@mipmap/fairytail"
             android:elevation="8dp"
             android:background="@color/white"
             android:layout_marginHorizontal="4dp"
             android:layout_marginVertical="4dp"
+            app:loadImageHeight="@{height}"
+            app:loadImageUrl="@{item.url}"
+            app:loadImageWidth="@{168}"
+            android:transitionName="photo"
             />
         <!--app:layout_constraintBottom_toBottomOf="parent"-->
         <!--app:layout_constraintLeft_toLeftOf="parent"-->

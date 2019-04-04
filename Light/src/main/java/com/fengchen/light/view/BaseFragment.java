@@ -1,13 +1,18 @@
 package com.fengchen.light.view;
 
+import android.app.ActivityOptions;
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.google.gson.Gson;
 
 /**
  * ===============================================
@@ -63,5 +68,15 @@ public abstract class BaseFragment<DB extends ViewDataBinding> extends Fragment 
         if (mBinding != null)
             mBinding.unbind();
         super.onDestroy();
+    }
+
+    public void toActivity(View view, Intent intent) {
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.LOLLIPOP) {
+            Pair<View, String> p = new Pair<>(view, view.getTransitionName());
+            ActivityOptions activityOptions =
+                    ActivityOptions.makeSceneTransitionAnimation(getActivity(), p);
+            startActivityForResult(intent,0, activityOptions.toBundle());
+        } else
+            startActivityForResult(intent, 0);
     }
 }

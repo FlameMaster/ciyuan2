@@ -107,11 +107,7 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
     }
 
 
-    /**
-     * 判断导航栏是否显示
-     *
-     * @return
-     */
+    /*判断导航栏是否显示*/
     public boolean isNavigationBarShow() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
             Display display = getWindowManager().getDefaultDisplay();

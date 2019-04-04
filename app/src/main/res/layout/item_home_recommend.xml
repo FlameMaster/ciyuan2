@@ -5,24 +5,71 @@
 
     <data class="ItemHomeBannerBD">
 
+        <variable
+            name="recommend"
+            type="com.fengchen.ciyuan2.bean.MovieItem"/>
+
+        <variable
+            name="top"
+            type="Integer"/>
     </data>
+
     <com.fengchen.ciyuan2.wiget.RoundLayout
         android:layout_width="210dp"
         android:layout_height="120dp"
-        app:corner_radius="8dp"
         android:layout_marginLeft="16dp"
-        android:elevation="8dp"
-        android:background="@drawable/bg_radius8"
         android:layout_marginVertical="16dp"
+        android:background="@drawable/bg_radius8"
+        android:elevation="8dp"
+        app:corner_radius="8dp"
         >
         <!--android:background="@drawable/bg_radius8"-->
 
 
-        <ImageView
+        <com.fengchen.ciyuan2.wiget.RoundGifImageView
             android:id="@+id/img"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
+            app:loadImageHeight="@{120}"
+            app:loadImageUrl="@{recommend.cover}"
+            app:loadImageWidth="@{210}"
+            android:layout_margin="4dp"
+            app:corner_radius="8dp"
+            android:alpha="0.8"
+            />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#dfff"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:paddingHorizontal="8dp"
+            android:paddingVertical="4dp"
+            android:text="@{recommend.title}"
+            android:textColor="@color/colorPrimary"
+            android:textSize="10sp"
+            android:gravity="center_vertical"
+            app:layout_constraintBottom_toBottomOf="@+id/img"
+            app:layout_constraintLeft_toLeftOf="@+id/img"
+            android:maxWidth="210dp"
+            />
+
+        <TextView
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:background="@drawable/ic_medal"
+            app:layout_constraintRight_toRightOf="@+id/img"
+            app:layout_constraintTop_toTopOf="@+id/img"
+            android:text="@{top+@string/_null}"
+            android:gravity="center_horizontal|top"
+            android:textColor="@color/colorPrimary"
+            android:textSize="14sp"
+            android:paddingTop="6dp"
+            android:elevation="4dp"
+            android:textStyle="bold"
             />
 
     </com.fengchen.ciyuan2.wiget.RoundLayout>

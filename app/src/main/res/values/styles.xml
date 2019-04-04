@@ -34,4 +34,22 @@
         <item name="android:radius">8dp</item>
     </style>
 
+    <style name="PictureBar" parent="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="colorControlNormal">@color/colorPrimary</item>
+        <!--<item name="android:homeAsUpIndicator">@drawable/web_detail_back</item>-->
+        <item name="android:actionMenuTextColor">@color/colorPrimary</item>
+    </style>
+    <style name="PicturePopup" parent="@style/ThemeOverlay.AppCompat.Light">
+        <item name="android:windowBackground">@color/transparent</item>
+        <item name="android:background">@color/transparent</item>
+        <item name="android:colorBackground">@color/transparent</item>
+        <item name="android:popupBackground">@color/transparent</item>
+        <!-- 设置Menu菜单的背景色 -->
+        <item name="android:itemBackground">@drawable/bg_menu_item</item>
+        <!-- 设置Menu菜单的字体颜色 -->
+        <item name="android:textColorPrimary">@color/white</item>
+        <!-- 设置Menu窗口不覆盖Toolbar视图 -->
+        <item name="overlapAnchor">false</item>
+    </style>
+
 </resources>

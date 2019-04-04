@@ -655,7 +655,7 @@ public class ImageUtil {
     /**
      * 获取缩放比例
      */
-    private static int calculateInSampleSize(BitmapFactory.Options options,
+    public static int calculateInSampleSize(BitmapFactory.Options options,
                                              int reqWidth, int reqHeight) {
 
         // Raw height and width of image

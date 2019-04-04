@@ -2,13 +2,16 @@ package com.fengchen.ciyuan2.utils;
 
 import android.databinding.BindingAdapter;
 import android.graphics.drawable.Drawable;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.Target;
 import com.fengchen.light.utils.FCUtils;
 import com.fengchen.light.utils.StringUtil;
+
 
 /**
  * ===========================================================
@@ -34,13 +37,43 @@ public class DataBindingUtils {
 //                    .setHeight(FCUtils.dp2px(loadImageHeight));
 //            RxImageLoader.with().load(imageParameter).into(view);
 
+            //宽高为0时保持原大小
             RequestOptions options = new RequestOptions()
-                    .override(FCUtils.dp2px(loadImageWidth), FCUtils.dp2px(loadImageHeight))
+                    .override(loadImageWidth > 0 ? FCUtils.dp2px(loadImageWidth) : Target.SIZE_ORIGINAL,
+                            loadImageHeight > 0 ? FCUtils.dp2px(loadImageHeight) : Target.SIZE_ORIGINAL);
+
 //                    .placeholder(R.drawable.placeholder_square_z150_z150)
 //                    .error(R.drawable.placeholder_square_z150_z150)
-                    ;
-            Glide.with(FCUtils.getContext()).asBitmap().load(url).apply(options).into(view);
+//            Glide.with(FCUtils.getContext()).asBitmap().load(url).apply(options).into(view);
+            Glide.with(FCUtils.getContext()).load(url).apply(options).into(view);
+
+            //图片地址后面加上这个可以裁剪图片
+//            @1320w_824h.webp
+        }
+    }
+
+    /*加载网络图片*/
+    @BindingAdapter({"loadBackgroundeUrl", "loadBackgroundWidth", "loadBackgroundHeight"})
+    public static void loadBackgroundeUrl(View view, String url, int loadImageWidth, int loadImageHeight) {
+        if (view != null && StringUtil.isImageUrl(url)) {
+//            ImageParameter imageParameter = new ImageParameter(url)
+//                    .setWidth(FCUtils.dp2px(loadImageWidth))
+//                    .setHeight(FCUtils.dp2px(loadImageHeight));
+//            RxImageLoader.with().load(imageParameter).into(view);
+
+            //宽高为0时保持原大小
+            RequestOptions options = new RequestOptions()
+                    .override(loadImageWidth > 0 ? FCUtils.dp2px(loadImageWidth) : Target.SIZE_ORIGINAL,
+                            loadImageHeight > 0 ? FCUtils.dp2px(loadImageHeight) : Target.SIZE_ORIGINAL);
+
+//                    .placeholder(R.drawable.placeholder_square_z150_z150)
+//                    .error(R.drawable.placeholder_square_z150_z150)
+//            Glide.with(FCUtils.getContext()).asBitmap().load(url).apply(options).into(view);
 //            Glide.with(FCUtils.getContext()).load(url).apply(options).into(view);
+
+
+            //图片地址后面加上这个可以裁剪图片
+//            @1320w_824h.webp
         }
     }
 

@@ -1,5 +1,6 @@
 package com.fengchen.ciyuan2.a_movie;
 
+import android.animation.Animator;
 import android.annotation.SuppressLint;
 import android.app.Service;
 import android.content.ComponentName;
@@ -9,7 +10,10 @@ import android.content.ServiceConnection;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.database.ContentObserver;
+import android.databinding.ViewDataBinding;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.drawable.BitmapDrawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -17,22 +21,54 @@ import android.hardware.SensorManager;
 import android.os.Handler;
 import android.os.IBinder;
 import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.constraint.ConstraintLayout;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.util.Log;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 import android.view.View;
+import android.view.ViewAnimationUtils;
+import android.view.ViewGroup;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.AlphaAnimation;
+import android.view.animation.Animation;
+import android.widget.GridLayout;
+import android.widget.ImageView;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
+import com.fengchen.ciyuan2.bean.MediaModel;
+import com.fengchen.ciyuan2.bean.Movie;
+import com.fengchen.ciyuan2.bean.MovieItem;
+import com.fengchen.ciyuan2.databinding.ItemMovieBannerBD;
+import com.fengchen.ciyuan2.net.CYEntity;
+import com.fengchen.ciyuan2.net.LoadUtils;
 import com.fengchen.ciyuan2.utils.CYUtils;
 import com.fengchen.ciyuan2.R;
 import com.fengchen.ciyuan2.RxBusClient;
 import com.fengchen.ciyuan2.databinding.ActVideoBD;
+import com.fengchen.light.adapter.BaseHolder;
+import com.fengchen.light.adapter.BaseRecyclerAdapter;
+import com.fengchen.light.model.EventMessage;
+import com.fengchen.light.rxjava.RxBus;
 import com.fengchen.light.utils.FCUtils;
 import com.fengchen.light.utils.IOUtils;
 import com.fengchen.light.utils.StringUtil;
 import com.fengchen.light.view.BaseActivity;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -40,7 +76,10 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 
 /**
  * ===========================================================
@@ -67,14 +106,15 @@ public class VideoActivity extends BaseActivity<ActVideoBD> {
                     View.SYSTEM_UI_FLAG_LIGHT_NAVIGATION_BAR | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
     };
     /*横屏的两种风格*/
-//    private static final int[] SYSTEM_UI_FLAG_LANDSCAPE = {
-//            View.SYSTEM_UI_FLAG_IMMERSIVE | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION,
-//            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
-//                    View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
-//    };
     private static final int[] SYSTEM_UI_FLAG_LANDSCAPE = {
-            View.SYSTEM_UI_FLAG_IMMERSIVE | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION,
-            View.SYSTEM_UI_FLAG_IMMERSIVE | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+            View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    | View.SYSTEM_UI_FLAG_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_IMMERSIVE,
+            View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE |
+                    View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
     };
 
 
@@ -85,7 +125,6 @@ public class VideoActivity extends BaseActivity<ActVideoBD> {
 
     Intent mMediaPlayerIntent;
     MediaBinder mMediaBinder;
-    List<MediaModel> mVideos;
     MediaServiceConnection mMediaServiceConnection;
 
     /*屏幕方向*/
@@ -114,8 +153,10 @@ public class VideoActivity extends BaseActivity<ActVideoBD> {
 //                            View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION |
 //                            View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
             getWindow().getDecorView().setSystemUiVisibility(SYSTEM_UI_FLAG_LANDSCAPE[mWindowFlag]);
+            navigationColor = FCUtils.getColor(R.color.colorPrimary);
         } else
             getWindow().getDecorView().setSystemUiVisibility(SYSTEM_UI_FLAG_PORTRAIT[mWindowFlag]);
+//        statusColor= 0x33000000;
         // 状态栏
         getWindow().setStatusBarColor(0x33000000);
         // 虚拟导航键
@@ -133,11 +174,6 @@ public class VideoActivity extends BaseActivity<ActVideoBD> {
         //SurfaceHolder是SurfaceView的监听，callback是回调
         getViewDataBinding().tv.tvShow.getHolder().addCallback(callback);
 
-        mVideos = new ArrayList<>();
-        mVideos.add(new MediaModel(url2));
-
-        //绑定播放的服务
-        bindMediaService();
         //初始化屏幕旋转的参数
         initGravitySener();
 
@@ -150,7 +186,7 @@ public class VideoActivity extends BaseActivity<ActVideoBD> {
                 mChangeOrientationDisposable = Observable.timer(3, TimeUnit.SECONDS)
                         .compose(IOUtils.setThread())
                         .subscribe(aLong -> {
-                            mWindowFlag=1;
+                            mWindowFlag = 1;
                             showSurfaceClick(null);
                         });
             } else {//状态栏隐藏
@@ -181,6 +217,18 @@ public class VideoActivity extends BaseActivity<ActVideoBD> {
         });
 
         //注册rxbus
+//        RxBus.get().post(new EventMessage(VideoActivity.class.getName() + "onCreate"));
+
+        //
+        getViewDataBinding().other.list.setLayoutManager(new GridLayoutManager(FCUtils.getContext(), 4));
+        mListAdaper = new ListAdaper();
+        getViewDataBinding().other.list.setAdapter(mListAdaper);
+
+        //初始化数据
+        int surce = getIntent().getIntExtra("dataSource", -1);
+        String path = getIntent().getStringExtra("dataPath");
+        if (surce >= 0 && StringUtil.noNull(path))
+            initData(surce, path);
     }
 
     @Override
@@ -247,28 +295,59 @@ public class VideoActivity extends BaseActivity<ActVideoBD> {
 
 ///////////////////////——————————————————————播放回调—————————————————————————///////////////////////
 
-    RxBusClient mRxBusClient = new RxBusClient() {
+    RxBusClient mRxBusClient = new RxBusClient(VideoActivity.class.getName()) {
         @Override
         protected void onEvent(int type, String message, Object data) {
             if (StringUtil.noNull(message)) {
+                Log.d("收到消息:", "messge=" + message);
                 if (message.contains("tv_play"))
-                    onMediaPlay((MediaModel) data);
+                    onMediaPlay((Integer) data);
                 else if (message.contains("tv_start"))
                     onMediaStart();
                 else if (message.contains("tv_pause"))
                     onMediaPause();
                 else if (message.contains("tv_stop"))
                     onMediaStop();
+                else if (message.contains("tv_completion"))
+                    onMediaCompletion((Integer) data);
+                else if (message.contains("tv_loading")){
+                    getViewDataBinding().tv.tvLoadProgress.setVisibility((Boolean) data ? View.VISIBLE : View.GONE);
+                    getViewDataBinding().tv.expired.setVisibility(View.GONE);
+                }else if (message.contains("tv_expired")){
+                    getViewDataBinding().tv.tvLoadProgress.setVisibility(View.GONE);
+                    getViewDataBinding().tv.expired.setVisibility(View.VISIBLE);
+                }
             }
         }
     };
 
+    private void play(int position) {
+        //数据验证
+        if (position >= 0 &&
+                mMediaBinder != null &&
+                mMediaBinder.getMediaData(position) != null &&
+                StringUtil.noNull(mMediaBinder.getMediaData(position).getUrl()))
+            mMediaBinder.play(position);
+    }
+
     /*开始播放*/
-    private void onMediaPlay(MediaModel model) {
+    private void onMediaPlay(int position) {
         //设置标题
         //初始化各种参数
         getViewDataBinding().tv.tvProgressMaxText.setText(CYUtils.formatDuration(mMediaBinder.getDuration()));
         getViewDataBinding().tv.tvProgress.setMax(mMediaBinder.getDuration());
+        getViewDataBinding().tv.tvTitle.setText(getViewDataBinding().getMovie().getMovies().get(position).getTitle());
+        //改变title
+        for (int i = 0; i < getViewDataBinding().other.list.getChildCount(); i++) {
+            TextView tab = (TextView) getViewDataBinding().other.list.getChildAt(i);
+            if (i == position) {
+                tab.setBackgroundResource(R.drawable.bg_tab_h);
+                tab.setTextColor(Color.WHITE);
+            } else {
+                tab.setBackgroundResource(R.drawable.bg_tab_n);
+                tab.setTextColor(FCUtils.getColor(R.color.colorPrimary));
+            }
+        }
 
         //开始更新进度条
         if (mProgressDisposable != null) mProgressDisposable.dispose();
@@ -300,6 +379,11 @@ public class VideoActivity extends BaseActivity<ActVideoBD> {
     /*结束*/
     private void onMediaStop() {
         getViewDataBinding().tv.tvPlay.setImageResource(R.drawable.ic_tv_play);
+    }
+
+    /*播放完成*/
+    private void onMediaCompletion(int oosition) {
+        mMediaBinder.next();
     }
 
     /*更新进度条*/
@@ -370,13 +454,16 @@ public class VideoActivity extends BaseActivity<ActVideoBD> {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        //注销rxbus
+        mRxBusClient.unregister();
+        if (mProgressDisposable != null) mProgressDisposable.dispose();
         //解除屏幕变化开关的监听
         FCUtils.getContext().getContentResolver()
                 .unregisterContentObserver(mScreenRotateObserver);
-        unbindService(mMediaServiceConnection);
-        stopService(mMediaPlayerIntent);
-        //注销rxbus
-        mRxBusClient.unregister();
+        if (mMediaServiceConnection != null)
+            unbindService(mMediaServiceConnection);
+        if (mMediaPlayerIntent != null)
+            stopService(mMediaPlayerIntent);
     }
 
     /*屏幕方向切换*/
@@ -478,11 +565,11 @@ public class VideoActivity extends BaseActivity<ActVideoBD> {
             Log.e("绑定成功", "当前时间" + new SimpleDateFormat("mm:ss:")
                     .format(new Date()));
             mMediaBinder = (MediaBinder) service;
-            mMediaBinder.setMedias(mVideos);
+            mMediaBinder.setMedias(getViewDataBinding().getMovie().getMovies());
 
 
             //开始播放
-            mMediaBinder.play(0);
+            play(0);
             Observable.timer(1, TimeUnit.SECONDS)
                     .subscribe(aLong -> {
                         //设置视频播放的控件
@@ -503,12 +590,24 @@ public class VideoActivity extends BaseActivity<ActVideoBD> {
         @Override
         public void surfaceCreated(SurfaceHolder holder) {
             Log.e("初始化callback", "surfaceCreated：holder=" + holder);
+            if (mMediaBinder != null)
+                holder.setFixedSize(mMediaBinder.getVideoWidth(), mMediaBinder.getVideoHeight());
         }
 
         @Override
         public void surfaceChanged(SurfaceHolder holder, int format, int width, int height) {
             Log.e("切换callback", "surfaceChanged：holder=" + holder);
-
+            Log.e("切换callback", "width=" + width + "||height=" + height);
+            if (mMediaBinder != null) {
+                float videoRatio = mMediaBinder.getVideoWidth() / mMediaBinder.getVideoHeight();
+                float ratio = width / height;
+                if (ratio > videoRatio) {//比原比例宽
+                    width = (int) (height * videoRatio);
+                } else if (ratio < videoRatio) {//比原比例高
+                    height = (int) (width / videoRatio);
+                }
+                holder.setFixedSize(width, height);
+            }
         }
 
         @Override
@@ -518,4 +617,176 @@ public class VideoActivity extends BaseActivity<ActVideoBD> {
     };
 
 
+///////////////////////——————————————————————数据初始化—————————————————————————///////////////////////
+
+    ListAdaper mListAdaper;
+
+    @SuppressLint("CheckResult")
+    private void initData(int surce, String path) {
+        Observable.create((ObservableOnSubscribe<Movie>) emitter -> {
+            Movie entity = LoadUtils.getData(surce, path,
+                    new TypeToken<CYEntity<Movie>>() {
+                    });
+            emitter.onNext(entity);
+            emitter.onComplete();
+        })
+                .compose(IOUtils.setThread())
+                .subscribe(movie -> {
+                    Log.d("videoAct", "初始化数据:" + movie.getMovies().get(0).getTitle());
+                    getViewDataBinding().setMovie(movie);
+
+                    //绑定播放的服务
+                    bindMediaService();
+                    if (movie.getMovies() != null)
+                        if (movie.getMovies().size() > 1) {
+                            getViewDataBinding().other.list.setItemAnimator(new DefaultItemAnimator());
+                            for (MediaModel model : movie.getMovies()) {
+                                if (StringUtil.noNull(model.getUrl()))
+//                                    addMediaTab(model);
+                                    mListAdaper.datas.add(model);
+                            }
+                            mListAdaper.setItemClickListener((viewHolder, position, data) -> {
+                                //数据变化
+                                if (mMediaBinder != null) {
+                                    play(position);
+                                }
+                            });
+                        } else if (movie.getMovies().size() == 1)
+                            movie.getMovies().get(0).setTitle(movie.getTitle());
+                });
+        Observable.timer(500, TimeUnit.MILLISECONDS)
+                .compose(IOUtils.setThread())
+                .subscribe(aLong -> {
+//                        Animation animation = new AlphaAnimation(1F, 0F);
+//                        animation.setDuration(400);
+//                        getViewDataBinding().other.shade.startAnimation(animation);
+                    Animator animator = ViewAnimationUtils.createCircularReveal(
+                            getViewDataBinding().other.getRoot(), //作用在哪个View上面
+                            getViewDataBinding().getRoot().getWidth() / 2,
+                            getViewDataBinding().getRoot().getWidth(), //扩散的中心点
+                            50, //开始扩散初始半径
+                            1920);
+                    animator.setDuration(500);
+                    animator.setInterpolator(new AccelerateInterpolator());
+                    animator.start();
+                    getViewDataBinding().other.shade.setVisibility(View.GONE);
+                });
+    }
+
+    /*添加分集ui*/
+    private void addMediaTab(MediaModel model) {
+        TextView tv = new TextView(FCUtils.getContext());
+        GridLayout.LayoutParams lp = new GridLayout.LayoutParams();
+        lp.rowSpec = GridLayout.spec(GridLayout.UNDEFINED, 1);
+        lp.columnSpec = GridLayout.spec(GridLayout.UNDEFINED, 1);
+//        lp.width = (getViewDataBinding().other.list.getMeasuredWidth() - FCUtils.dp2px(16))
+//                / getViewDataBinding().other.list.getColumnCount()
+//                - FCUtils.dp2px(16);
+        lp.height = FCUtils.dp2px(48);
+        lp.topMargin = FCUtils.dp2px(6);
+        lp.bottomMargin = FCUtils.dp2px(6);
+        lp.leftMargin = FCUtils.dp2px(8);
+        lp.rightMargin = FCUtils.dp2px(8);
+        tv.setLayoutParams(lp);
+        tv.setPadding(FCUtils.dp2px(8), FCUtils.dp2px(6), FCUtils.dp2px(8), FCUtils.dp2px(6));
+//        tv.setPadding(FCUtils.dp2px(8), 0, FCUtils.dp2px(8), 0);
+        tv.setMaxLines(2);
+        tv.setEllipsize(TextUtils.TruncateAt.END);
+        tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+        if (getViewDataBinding().other.list.getChildCount() == 0) {
+            tv.setBackgroundResource(R.drawable.bg_tab_h);
+            tv.setTextColor(Color.WHITE);
+        } else {
+            tv.setBackgroundResource(R.drawable.bg_tab_n);
+            tv.setTextColor(FCUtils.getColor(R.color.colorPrimary));
+        }
+        tv.setGravity(Gravity.TOP | Gravity.LEFT);
+        tv.setText(model.getTitle());
+        //点击事件
+        final int position = getViewDataBinding().other.list.getChildCount();
+        getViewDataBinding().other.list.addView(tv);
+
+        //点击事件
+        tv.setOnClickListener(v -> {
+            //数据变化
+            if (mMediaBinder != null) {
+                play(position);
+            }
+        });
+    }
+
+    public void nullClick(View view){}
+
+    class ListAdaper extends RecyclerView.Adapter<ListHolder> {
+
+        List<MediaModel> datas;
+        BaseRecyclerAdapter.OnItemClickListener itemClickListener;
+
+        ListAdaper() {
+            datas = new ArrayList<>();
+        }
+
+        public void setItemClickListener(BaseRecyclerAdapter.OnItemClickListener itemClickListener) {
+            this.itemClickListener = itemClickListener;
+        }
+
+        @NonNull
+        @Override
+        public ListHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+            TextView tv = new TextView(FCUtils.getContext());
+            RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(
+                    RecyclerView.LayoutParams.MATCH_PARENT,
+                    RecyclerView.LayoutParams.WRAP_CONTENT);
+            lp.topMargin = FCUtils.dp2px(6);
+            lp.bottomMargin = FCUtils.dp2px(6);
+            lp.leftMargin = FCUtils.dp2px(8);
+            lp.rightMargin = FCUtils.dp2px(8);
+            tv.setLayoutParams(lp);
+            tv.setPadding(FCUtils.dp2px(8), FCUtils.dp2px(6), FCUtils.dp2px(8), FCUtils.dp2px(6));
+            tv.setMaxLines(2);
+            tv.setEllipsize(TextUtils.TruncateAt.END);
+            tv.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+            if (getViewDataBinding().other.list.getChildCount() == 0) {
+                tv.setBackgroundResource(R.drawable.bg_tab_h);
+                tv.setTextColor(Color.WHITE);
+            } else {
+                tv.setBackgroundResource(R.drawable.bg_tab_n);
+                tv.setTextColor(FCUtils.getColor(R.color.colorPrimary));
+            }
+            tv.setGravity(Gravity.TOP | Gravity.LEFT);
+
+            return new ListHolder(tv);
+        }
+
+        @Override
+        public void onBindViewHolder(@NonNull ListHolder viewHolder, int i) {
+            viewHolder.updata(i, datas.get(i));
+            if (itemClickListener != null)
+                viewHolder.itemView.setOnClickListener(v ->
+                        itemClickListener.onItemClick(null, i, datas.get(i)));
+        }
+
+        @Override
+        public int getItemCount() {
+            if (datas == null) return 0;
+            return datas.size();
+        }
+    }
+
+    class ListHolder extends RecyclerView.ViewHolder {
+
+        TextView title;
+
+        public ListHolder(@NonNull TextView itemView) {
+            super(itemView);
+            setIsRecyclable(false);
+            title = itemView;
+        }
+
+        public void updata(int position, MediaModel model) {
+            title.setText(model.getTitle());
+        }
+
+
+    }
 }

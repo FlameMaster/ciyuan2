@@ -1,0 +1,115 @@
+{
+    "code": 200,
+    "data": {
+        "explain": "
+        普通的应届大学毕业生夏铃在求职之际，收到了一条奇怪的面试通知，因此误入罗刹街并遭到了危险，幸而被镇魂将曹焱兵搭救。然而接触中，曹焱兵却发现，夏铃也是寄灵人。与此同时，夏铃开始遭到不明身份刺客的追杀，曹焱兵亦被卷入其中，二人的命运从此开始了交集，而在这一切的背后，似乎还隐藏着某些更加危险的秘密……\n
+        网络动画《镇魂街》改编自许辰原作的同名网络漫画，动画由卢恒宇和李姝洁工作室负责制作。动画剧情采用阴阳版双线叙事手法，单数集为阳版现在篇，双数集为阴版回忆篇。 第1期于2016年4月28日起每周四在优酷首发，全24话。",
+        "movies": [
+            {
+                "title": "第01话\n镇魂街",
+                "url": "https://v-mtime.com/20180723/24190_19dc8280/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第02话\n兄弟",
+                "url": "https://v-mtime.com/20180723/24192_b4c12932/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第03话\n寄灵人",
+                "url": "https://v-mtime.com/20180723/24191_2fc155fe/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第04话\n誓言",
+                "url": "https://v-mtime.com/20180723/24193_070332f6/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第05话\n王国组织",
+                "url": "https://v-mtime.com/20180723/24194_8bb4b264/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第06话\n无家可归",
+                "url": "https://v-mtime.com/20180723/24195_03f61e93/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第07话\n欢迎来到罗刹街",
+                "url": "https://v-mtime.com/20180723/24196_8512958a/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第08话\n刘羽禅",
+                "url": "https://v-mtime.com/20180723/24197_afacfdcf/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第09话\n山不在高",
+                "url": "https://v-mtime.com/20180723/24198_02796065/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第10话\n温柔是罪",
+                "url": "https://v-mtime.com/20180723/24199_c6665a4e/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第11话\n暴雨梨花",
+                "url": "https://v-mtime.com/20180723/24200_392842c4/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第12话\n新的誓言",
+                "url": "https://v-mtime.com/20180723/24201_e1f6fbc1/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第13话\n锁心链",
+                "url": "https://v-mtime.com/20180723/24202_b62cf372/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第14话\n灵槐枝",
+                "url": "https://v-mtime.com/20180723/24203_98476473/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第15话\n夏铃的抉择",
+                "url": "https://v-mtime.com/20180723/24204_228ae4e2/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第16话\n为了过去的战斗",
+                "url": "https://v-mtime.com/20180723/24205_451ad34a/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第17话\n四面楚歌",
+                "url": "https://v-mtime.com/20180723/24206_54b40505/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第18话\n人鬼殊途",
+                "url": "https://v-mtime.com/20180723/24207_a270596a/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第19话\n第九骑士",
+                "url": "https://v-mtime.com/20180723/24208_baa6f6cc/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第20话\n背水一战",
+                "url": "https://v-mtime.com/20180723/24237_58b88045/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第21话\n破竹之势",
+                "url": "https://v-mtime.com/20180723/24211_abc36e4f/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第22话\n武神躯",
+                "url": "https://v-mtime.com/20180723/24210_dcd903f6/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第23话\n成王之路",
+                "url": "https://v-mtime.com/20180723/24209_29a76b11/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第24话\n冒险的黎明",
+                "url": "https://v-mtime.com/20180723/24238_0ef7c6e5/1000k/hls/index.m3u8"
+            }
+        ],
+        "owner": {
+            "intro": "少年曾经说过，我从红尘走过，只为繁华中寻你，与我同乐。",
+            "nickname": "江湖人称风尘子",
+            "photo": "https://i0.hdslb.com/bfs/face/59d7b014964dc31af6fbf319881f6231777f5f13.jpg"
+        },
+        "textDate": "2019-02-17",
+        "title": "【国漫】镇魂街(第一季)"
+    },
+    "date": 0,
+    "message": "欢迎使用二刺猿"
+}

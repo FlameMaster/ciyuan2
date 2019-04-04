@@ -215,7 +215,8 @@ public class StringUtil {
                 | url.toLowerCase().contains(".png")
                 | url.toLowerCase().contains(".jpeg")
                 | url.toLowerCase().contains(".gif")
-                | url.toLowerCase().contains(".bmp")) return true;
+                | url.toLowerCase().contains(".bmp")
+                | url.toLowerCase().contains(".webp")) return true;
         return false;
     }
 }

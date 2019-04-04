@@ -1,0 +1,69 @@
+{
+    "code": 200,
+    "data": {
+        "explain": "
+        名门·私立百花王学园，在这所学园里存在着阶级制度。以学生会为顶点的这一所学校，受到“赌博”支配。赢的话就是天国，输的话就是地狱。赌博强者受人羡慕、弱者被虐的疯狂学园。而这样的学园里，转来了一位少女，她的名字是蛇喰梦子。\n
+        《狂赌之渊》 [1-2]  是河本ほむら原作、尚村透作画，2014年03月22日开始连载于《月刊GANGAN JOKER》上的漫画。其外传漫画为《狂赌之渊·双》、《狂赌之渊·妄》、《狂赌之渊（假）》。\n
+        单行本日文版由史克威尔艾尼克斯出版发行，繁体中文版由青文出版社代理发行。\n
+        截至2017年2月，该漫画系列（含外传）累计销量突破200万部。",
+        "movies": [
+            {
+                "title": "第01话\n名为蛇喰梦子的女人",
+                "url": "https://cn2.okokyun.com/20171113/rJziHBEb/1201kb/hls/index.m3u8"
+            },
+            {
+                "title": "第02话\n无聊的女人",
+                "url": "https://cn2.okokyun.com/20171113/yQwot54I/1201kb/hls/index.m3u8"
+            },
+            {
+                "title": "第03话\n眯眼的女人",
+                "url": "https://cn2.okokyun.com/20171113/VZ86xSdc/1188kb/hls/index.m3u8"
+            },
+            {
+                "title": "第04话\n成为家畜的女人",
+                "url": "https://cn2.okokyun.com/20171113/CnNTrCUP/1197kb/hls/index.m3u8"
+            },
+            {
+                "title": "第05话\n成为人类的女人",
+                "url": "https://cn2.okokyun.com/20171113/qCbzIYG1/1191kb/hls/index.m3u8"
+            },
+            {
+                "title": "第06话\n提出邀请的女人",
+                "url": "https://cn2.okokyun.com/20171113/8yVpTsee/1257kb/hls/index.m3u8"
+            },
+            {
+                "title": "第07话\n拒绝的女人们",
+                "url": "https://cn2.okokyun.com/20171113/MvKBnb3q/1273kb/hls/index.m3u8"
+            },
+            {
+                "title": "第08话\n爱舞的女人",
+                "url": "https://cn2.okokyun.com/20171113/cD1cvE7s/1264kb/hls/index.m3u8"
+            },
+            {
+                "title": "第09话\n做梦的女人",
+                "url": "https://cn2.okokyun.com/20171113/qgifzCsQ/1431kb/hls/index.m3u8"
+            },
+            {
+                "title": "第10话\n选择的女人",
+                "url": "https://v2.yongjiujiexi.com/ppvod/17AB99A7DCD96217C8C17B50DC894275.m3u8"
+            },
+            {
+                "title": "第11话\n赌上人生的女人",
+                "url": "https://v2.yongjiujiexi.com/ppvod/2786A91F8B31DF6AF699A43523071C14.m3u8"
+            },
+            {
+                "title": "第12话\n为赌而狂的女人",
+                "url": "https://v.bwzybf.com/ppvod/C4D692C250C920E339326C27894F2520.m3u8"
+            }
+        ],
+        "owner": {
+            "intro": "少年曾经说过，我从红尘走过，只为繁华中寻你，与我同乐。",
+            "nickname": "江湖人称风尘子",
+            "photo": "https://i0.hdslb.com/bfs/face/59d7b014964dc31af6fbf319881f6231777f5f13.jpg"
+        },
+        "textDate": "2019-02-17",
+        "title": "【日漫】狂赌之渊"
+    },
+    "date": 0,
+    "message": "欢迎使用二刺猿"
+}

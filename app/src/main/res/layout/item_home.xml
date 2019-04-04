@@ -6,7 +6,8 @@
     <data class="ItemHomeBD">
 
     </data>
-    <com.fengchen.ciyuan2.wiget.RoundLayout
+    <com.fengchen.ciyuan2.wiget.ParallaxLayout
+        android:id="@+id/root"
         android:layout_width="match_parent"
         android:layout_height="160dp"
         app:corner_radius="8dp"
@@ -25,5 +26,5 @@
             android:scaleType="centerCrop"
             />
 
-    </com.fengchen.ciyuan2.wiget.RoundLayout>
+    </com.fengchen.ciyuan2.wiget.ParallaxLayout>
 </layout>

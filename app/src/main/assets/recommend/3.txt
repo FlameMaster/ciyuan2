@@ -1,0 +1,75 @@
+{
+    "code": 200,
+    "data": {
+        "explain": "
+        在此岸与彼岸的交界处，八百万神明和服侍他们的死灵——神器，以及被称为妖的魑魅魍魉一同生活着。\n
+        某天，普通的女初中生一岐日和因一个意外而遇到了居无定所、没有工作、自称是“神”的穿着运动衫的夜斗。当然，此话不假，夜斗正是没有神社供奉、缺少香火的落魄神明，因为性格缺陷，导致手下的神器纷纷跳槽。怀抱“受万民景仰”这个伟大的他，只好只身在此岸与彼岸间徘徊，为五元（日语中“五元”与“有缘”同音）的香油钱折腰，接受上至斩妖除魔，下至修东修西的各类委托。\n
+        然而像这样一个性格粗心大意、性情不定，而且不能很好地听祈愿、没有人知道的神明却有一个能力，那就是将此岸与彼岸以及其夹缝——世上各种杂七杂八的东西斩断。\n
+        电视动画《野良神》改编自安达渡嘉创作的同名神幻题材漫画作品，制作公司由骨头社（BONES）担当。“野良”在日语中原指旷原、田野，也可形容居无定所的流浪者。故事讲述了居无定所、没有工作、自称是“神”的穿着运动衫的夜斗与普通的初三女生壹岐日和因为一次意外的事故而结缘，并由此展开的一系列奇幻冒险故事。\n
+        2014年1月5日起每周日22：30在TOKYO MX首播。中国大陆由哔哩哔哩弹幕网独家正版。\n
+        第二季《野良神 ARAGOTO》于2015年10月开始播出。",
+        "movies": [
+            {
+                "title": "第01话\n家猫与流浪神与尾巴",
+                "url": "https://sina.com-h-sina.com/20180809/6876_5d287fbc/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第02话\n如雪般",
+                "url": "https://sina.com-h-sina.com/20180809/6877_196d04eb/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第03话\n招致灾厄",
+                "url": "https://sina.com-h-sina.com/20180809/6878_db909827/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第04话\n幸福的所在",
+                "url": "https://sina.com-h-sina.com/20180809/6879_b6714961/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第05话\n境界线",
+                "url": "hhttps://sina.com-h-sina.com/20180809/6880_1deac826/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第06话\n可怕的人",
+                "url": "https://sina.com-h-sina.com/20180809/6881_0da85eb2/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第07话\n迷惘之事、注定之事",
+                "url": "https://sina.com-h-sina.com/20180809/6882_79c957c3/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第08话\n跨越那一线",
+                "url": "https://sina.com-h-sina.com/20180809/6883_62963dd9/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第09话\n名字",
+                "url": "https://sina.com-h-sina.com/20180809/6884_1655042e/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第10话\n忌讳者",
+                "url": "https://sina.com-h-sina.com/20180809/6885_71a57464/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第11话\n被抛弃的神明",
+                "url": "https://sina.com-h-sina.com/20180809/6886_33e16b7c/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第12话\n一片记忆碎片",
+                "url": "https://sina.com-h-sina.com/20180809/6887_4336658e/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第13话\n都是第二季",
+                "url": "https://sina.com-h-sina.com/20180809/6888_957f8d28/1000k/hls/index.m3u8"
+            }
+        ],
+        "owner": {
+            "intro": "少年曾经说过，我从红尘走过，只为繁华中寻你，与我同乐。",
+            "nickname": "江湖人称风尘子",
+            "photo": "https://i0.hdslb.com/bfs/face/59d7b014964dc31af6fbf319881f6231777f5f13.jpg"
+        },
+        "textDate": "2019-02-17",
+        "title": "【日漫】野良神(第一季)"
+    },
+    "date": 0,
+    "message": "欢迎使用二刺猿"
+}

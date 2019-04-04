@@ -5,12 +5,15 @@
 
     <data class="ItemInsetBannerBD">
 
+        <variable
+            name="banner"
+            type="com.fengchen.ciyuan2.bean.InsetItem"/>
     </data>
 
     <com.fengchen.ciyuan2.wiget.RoundLayout
-        android:layout_width="300dp"
+        android:layout_width="280dp"
         android:layout_height="160dp"
-        android:layout_marginLeft="8dp"
+        android:layout_marginHorizontal="4dp"
         android:layout_marginVertical="8dp"
         android:background="@drawable/bg_radius8"
         android:elevation="8dp"
@@ -28,6 +31,9 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:loadImageHeight="@{160}"
+            app:loadImageUrl="@{banner.url}"
+            app:loadImageWidth="@{280}"
             />
 
     </com.fengchen.ciyuan2.wiget.RoundLayout>

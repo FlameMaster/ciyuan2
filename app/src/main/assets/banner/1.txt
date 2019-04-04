@@ -1,0 +1,123 @@
+{
+    "code": 200,
+    "data": {
+        "explain": "
+        107年前（743年），世界上突然出现了人类的天敌“巨人”。面临着生存危机而残存下来的人类逃到了一个地方，盖起了三重巨大的城墙。人们在这隔绝的环境里享受了一百多年的和平，直到艾伦·耶格尔十岁那年，60米高的“超大型巨人”突然出现，以压倒性的力量破坏城门，其后瞬间消失，凶残的巨人们成群的冲进墙内捕食人类。\n
+        艾伦亲眼看着人们以及自己的母亲被巨人吞食，怀着对巨人无法形容的憎恨和痛恨，誓言杀死所有巨人。城墙崩坏的两年后，艾伦加入104期训练兵团学习和巨人战斗的技术。在训练兵团的三年，艾伦在同期训练兵里有着其他人无法比拟的强悍精神力。即使亲眼见过地狱也依然勇敢地向巨人挑战的艾伦，如愿以偿加入了向往已久的调查兵团。\n
+        在他正做着到墙壁的外面去这个梦的时候，毁坏墙壁的超大巨人出现了。\n
+        《进击的巨人》（进撃の巨人），是日本漫画家谏山创创作的少年漫画作品，于2009年在讲谈社旗下的漫画杂志《别册少年Magazine》上开始连载。\n
+        该作品曾获2011年“这本漫画真厉害！”男性榜第1名、“讲谈社漫画赏少年部门赏”等奖项 。2012年12月正式宣布TV动画化，2013年4月6日，由WIT STUDIO改编的同名电视动画正式开始放送。\n
+        截止至2017年3月，单行本21卷累计发行量突破6300万册。卷均300万册。",
+        "movies": [
+            {
+                "title": "第01话\n",
+                "url": "http://youku.cdn-163.com/20180427/6670_c6a995cf/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第02话\n",
+                "url": "http://youku.com-www-163.com/20180611/11596_28f4162d/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第03话\n",
+                "url": "http://youku.cdn-163.com/20180427/6671_1ccaadb3/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第04话\n",
+                "url": "http://youku.cdn-163.com/20180427/6672_a9482a74/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第05话\n",
+                "url": "http://youku.cdn-163.com/20180427/6673_fb1dd271/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第06话\n",
+                "url": "http://youku.cdn-163.com/20180427/6674_8d5960ec/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第07话\n",
+                "url": "http://youku.cdn-163.com/20180427/6674_8d5960ec/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第08话\n",
+                "url": "http://youku.cdn-163.com/20180427/6676_99310cfa/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第09话\n",
+                "url": "http://youku.cdn-163.com/20180427/6677_6d8de255/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第10话\n",
+                "url": "http://youku.cdn-163.com/20180427/6678_6aeb5ef1/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第11话\n",
+                "url": "http://youku.cdn-163.com/20180427/6679_b75ad4be/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第12话\n",
+                "url": "http://youku.cdn-163.com/20180427/6680_76233906/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第13话\n",
+                "url": "http://youku.cdn-163.com/20180427/6681_a80a73e5/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第14话\n",
+                "url": "http://youku.cdn-163.com/20180427/6683_a6d2ad7d/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第15话\n",
+                "url": "http://youku.cdn-163.com/20180427/6684_381defca/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第16话\n",
+                "url": "http://youku.cdn-163.com/20180427/6685_a8a7906a/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第17话\n",
+                "url": "http://youku.cdn-163.com/20180427/6686_d74b32df/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第18话\n",
+                "url": "http://youku.cdn-163.com/20180427/6687_a8f5dbc9/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第19话\n",
+                "url": "http://youku.cdn-163.com/20180427/6688_7e5eed0e/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第20话\n",
+                "url": "http://youku.cdn-163.com/20180427/6689_1c1496f6/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第21话\n",
+                "url": "http://youku.cdn-163.com/20180427/6690_5ead8786/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第22话\n",
+                "url": "http://youku.cdn-163.com/20180427/6691_7fb42c2b/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第23话\n",
+                "url": "http://youku.cdn-163.com/20180427/6692_6c45d2d3/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第24话\n",
+                "url": "http://youku.cdn-163.com/20180427/6693_39192896/1000k/hls/index.m3u8"
+            },
+            {
+                "title": "第25话\n",
+                "url": "http://youku.cdn-163.com/20180427/6694_964c861d/1000k/hls/index.m3u8"
+            }
+        ],
+        "owner": {
+            "intro": "少年曾经说过，我从红尘走过，只为繁华中寻你，与我同乐。",
+            "nickname": "江湖人称风尘子",
+            "photo": "https://i0.hdslb.com/bfs/face/59d7b014964dc31af6fbf319881f6231777f5f13.jpg"
+        },
+        "textDate": "2019-02-17",
+        "title": "【日漫】进击的巨人(第一季)"
+    },
+    "date": 0,
+    "message": "欢迎使用二刺猿"
+}

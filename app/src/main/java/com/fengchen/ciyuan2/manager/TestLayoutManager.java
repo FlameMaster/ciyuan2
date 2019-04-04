@@ -176,6 +176,7 @@ public class TestLayoutManager extends RecyclerView.LayoutManager {
         }
     }
 
+    /*预加载：用于计算*/
     private void caculate(final RecyclerView.Recycler recycler, int dy) {
         S:
         for (int i = mChildRects.size(); i < getItemCount(); i++) {

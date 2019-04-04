@@ -1,5 +1,6 @@
 package com.fengchen.ciyuan2.a_inset;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.databinding.ViewDataBinding;
 import android.support.annotation.NonNull;
@@ -7,22 +8,29 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.util.Log;
 import android.view.View;
 
-import com.fengchen.ciyuan2.utils.DataBindingUtils;
 import com.fengchen.ciyuan2.R;
-import com.fengchen.ciyuan2.a_movie.VideoActivity;
+import com.fengchen.ciyuan2.bean.InsetItem;
+import com.fengchen.ciyuan2.bean.MainInset;
+import com.fengchen.ciyuan2.bean.MainMovie;
+import com.fengchen.ciyuan2.bean.MovieItem;
 import com.fengchen.ciyuan2.databinding.FgtInsetBD;
 import com.fengchen.ciyuan2.databinding.ItemInsetBD;
 import com.fengchen.ciyuan2.databinding.ItemInsetBannerBD;
+import com.fengchen.ciyuan2.net.CYEntity;
+import com.fengchen.ciyuan2.net.LoadUtils;
+import com.fengchen.ciyuan2.utils.CYUtils;
 import com.fengchen.light.adapter.BaseHolder;
 import com.fengchen.light.adapter.BaseRecyclerAdapter;
-import com.fengchen.light.model.ImageParameter;
 import com.fengchen.light.utils.FCUtils;
+import com.fengchen.light.utils.IOUtils;
 import com.fengchen.light.view.BaseFragment;
+import com.google.gson.reflect.TypeToken;
 
-import java.util.ArrayList;
-import java.util.List;
+import io.reactivex.Observable;
+import io.reactivex.ObservableOnSubscribe;
 
 /**
  * ===========================================================
@@ -49,27 +57,13 @@ public class InsetFragment extends BaseFragment<FgtInsetBD> {
     @Override
     protected void initFragment() {
 
-        ImageParameter imageParameter = new ImageParameter(
-                url,
-                1280, 720);
-
         //初始化推荐列表
         new PagerSnapHelper().attachToRecyclerView(getViewDataBinding().banner);
         getViewDataBinding().banner.setLayoutManager(new LinearLayoutManager(FCUtils.getContext(),
                 LinearLayoutManager.HORIZONTAL, false));
         mBannerAdapter = new BannerAdapter();
         getViewDataBinding().banner.setAdapter(mBannerAdapter);
-        List<ImageParameter> list = new ArrayList<>();
-        list.add(imageParameter);
-        list.add(imageParameter);
-        list.add(imageParameter);
-        list.add(imageParameter);
-        list.add(imageParameter);
-        mBannerAdapter.addDatas(list);
-        getViewDataBinding().banner.scrollToPosition(10000);
-        getViewDataBinding().banner.smoothScrollToPosition(10001);
         getViewDataBinding().banner.addOnScrollListener(new RecyclerView.OnScrollListener() {
-
             float MIN_SCALE = 0.65f;//当前图片缩小比例
 
             @Override
@@ -105,21 +99,16 @@ public class InsetFragment extends BaseFragment<FgtInsetBD> {
 //        getViewDataBinding().list
 //                .setLayoutManager(new TestLayoutManager(2));
         getViewDataBinding().list
-                .setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
+                .setLayoutManager(new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL));
         mListAdapter = new ListAdapter();
         getViewDataBinding().list.setAdapter(mListAdapter);
-
-
-        List<ImageParameter> list1 = new ArrayList<>();
-        for (int i = 0; i < 40; i++)
-            list1.add(imageParameter);
-        mListAdapter.addDatas(list1);
-
-        mListAdapter.setOnItemClickListener((viewHolder, position, data) -> {
-            Intent intent = new Intent(FCUtils.getContext(), VideoActivity.class);
-            startActivity(intent);
+        mListAdapter.setOnItemClickListener((BaseRecyclerAdapter.OnItemClickListener<InsetItem>) (viewHolder, position, data) -> {
+            Intent intent = new Intent(FCUtils.getContext(), PictureActivity.class);
+            intent.putExtra("url",data.getUrl());
+            toActivity(((ItemInsetBD)viewHolder.getBinding()).img,intent);
         });
 
+        loadData();
     }
 
     @Override
@@ -128,8 +117,36 @@ public class InsetFragment extends BaseFragment<FgtInsetBD> {
     }
 
 
+    /*加载数据*/
+    @SuppressLint("CheckResult")
+    private void loadData() {
+
+        Observable.create((ObservableOnSubscribe<MainInset>) emitter -> {
+            MainInset entity = LoadUtils.getData(
+                    MovieItem.SOURCE_ASSETS, "test_main_inset",
+                    new TypeToken<CYEntity<MainInset>>() {
+                    });
+            emitter.onNext(entity);
+            emitter.onComplete();
+        })
+                .compose(IOUtils.setThread())
+                .subscribe(entity -> {
+                    Log.e("加载结果", "entity=" + entity.getList().size());
+                    if (entity != null) {
+                        if (entity.getBanners() != null) {
+                            mBannerAdapter.addDatas(entity.getBanners());
+                            getViewDataBinding().banner.scrollToPosition(10000);
+                            getViewDataBinding().banner.smoothScrollToPosition(10001);
+                        }
+                        if (entity.getList() != null)
+                            mListAdapter.addDatas(entity.getList());
+                    }
+                });
+    }
+
+
     /*推荐适配器*/
-    private class BannerAdapter extends BaseRecyclerAdapter<ImageParameter, BaseHolder<ItemInsetBannerBD>> {
+    private class BannerAdapter extends BaseRecyclerAdapter<InsetItem, BaseHolder<ItemInsetBannerBD>> {
 
         @Override
         public int getRealPosition(BaseHolder holder) {
@@ -150,10 +167,8 @@ public class InsetFragment extends BaseFragment<FgtInsetBD> {
         }
 
         @Override
-        public void bindData(BaseHolder<ItemInsetBannerBD> viewHolder, int position, ImageParameter data) {
-
-            DataBindingUtils.loadImageUrl(viewHolder.getBinding().img, data.getUrl(),
-                    viewHolder.getBinding().img.getWidth(), viewHolder.getBinding().img.getHeight());
+        public void bindData(BaseHolder<ItemInsetBannerBD> viewHolder, int position, InsetItem data) {
+            viewHolder.getBinding().setBanner(data);
         }
 
         @Override
@@ -174,18 +189,25 @@ public class InsetFragment extends BaseFragment<FgtInsetBD> {
 
 
     /*内置适配器*/
-    private class ListAdapter extends BaseRecyclerAdapter<ImageParameter, BaseHolder<ItemInsetBD>> {
+    private class ListAdapter extends BaseRecyclerAdapter<InsetItem, BaseHolder<ItemInsetBD>> {
+        int width;
+
+        ListAdapter() {
+            width = (CYUtils.getWindowsSize()[0] - FCUtils.dp2px(8) * 3) / 2;
+        }
+
         @Override
-        public void bindData(BaseHolder<ItemInsetBD> viewHolder, int position, ImageParameter data) {
+        public void bindData(BaseHolder<ItemInsetBD> viewHolder, int position, InsetItem data) {
             RecyclerView.LayoutParams lp = (RecyclerView.LayoutParams) viewHolder.itemView.getLayoutParams();
-            if (position%5 == 0) lp.height = FCUtils.dp2px(240);
-            if (position%5 == 1) lp.height = FCUtils.dp2px(170);
-            if (position%5 == 2) lp.height = FCUtils.dp2px(140);
-            if (position%5 == 3) lp.height = FCUtils.dp2px(330);
-            if (position%5 == 4) lp.height = FCUtils.dp2px(210);
+            int height = data.getWidth() > 0 ? width * data.getHeight() / data.getWidth() : 0;
+            if (lp.height != height) {
+                lp.height = height;
+                viewHolder.itemView.setLayoutParams(lp);
+            }
+            viewHolder.getBinding().setHeight(height);
+            viewHolder.getBinding().setItem(data);
 
-            viewHolder.itemView.setLayoutParams(lp);
-
+            Log.d("****", "url=" + data.getUrl() + "\n" + "width=" + data.getWidth() + "\n" + "height=" + data.getHeight());
         }
 
         @Override

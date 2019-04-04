@@ -1,4 +1,4 @@
-package com.fengchen.ciyuan2.a_movie;
+package com.fengchen.ciyuan2.bean;
 
 /**
  * ===========================================================
@@ -10,12 +10,13 @@ package com.fengchen.ciyuan2.a_movie;
  * <p>
  * = 时 间：2018/12/10 14:56
  * <p>
- * = 分 类 说 明：
+ * = 分 类 说 明：媒体基础类
  * ============================================================
  */
 public class MediaModel {
     /*路径*/
     private String url;
+    private String title;
 
     public MediaModel(String url) {
         this.url = url;
@@ -27,5 +28,13 @@ public class MediaModel {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
     }
 }

@@ -5,6 +5,9 @@
 
     <data class="ItemMovieBannerBD">
 
+        <variable
+            name="banner"
+            type="com.fengchen.ciyuan2.bean.MovieItem"/>
     </data>
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
@@ -15,6 +18,30 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop"
+            app:loadImageHeight="@{200}"
+            app:loadImageUrl="@{banner.cover}"
+            app:loadImageWidth="@{360}"
+            />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:textColor="@color/white"
+            android:maxLines="1"
+            android:ellipsize="end"
+            android:text="@{banner.title}"
+            app:layout_constraintBottom_toBottomOf="@+id/img"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="8dp"
+            android:background="@drawable/bg_banner_title"
+            app:layout_constraintRight_toRightOf="@+id/img"
+            android:layout_marginBottom="36dp"
+            android:minWidth="240dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            android:gravity="center_horizontal"
+            android:textStyle="bold"
             />
 
     </android.support.constraint.ConstraintLayout>

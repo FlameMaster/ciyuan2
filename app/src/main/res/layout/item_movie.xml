@@ -5,6 +5,10 @@
 
     <data class="ItemAnimationBD">
 
+        <variable
+            name="item"
+            type="com.fengchen.ciyuan2.bean.MovieItem"/>
+
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -26,6 +30,9 @@
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintWidth_percent="0.3"
+            app:loadImageHeight="@{135}"
+            app:loadImageUrl="@{item.cover}"
+            app:loadImageWidth="@{108}"
             />
 
         <TextView
@@ -36,7 +43,7 @@
             android:ellipsize="end"
             android:includeFontPadding="false"
             android:maxLines="1"
-            android:text="标题标题标题标题标题标题"
+            android:text="@{item.title}"
             android:textColor="#009a33"
             android:textSize="16sp"
             app:layout_constraintLeft_toRightOf="@+id/img_cover"
@@ -51,10 +58,7 @@
             android:gravity="top|left"
             android:includeFontPadding="false"
             android:maxLines="5"
-            android:text="爆裂吧现实，粉碎吧精神，放逐这个世界，遵从血之盟约，吾在此召唤汝，夜之女王！\n
-立誓今生尊你为王，用我热血为你封疆。\n
-无论是现今还是以前我所保护的都是一样，从来就没有变过啊!!!\n\n
-隐约雷鸣 阴霾天空 即使天无雨 我亦留此地。\n"
+            android:text="@{item.explain}"
             android:textColor="#ddd"
             android:textSize="14sp"
             app:layout_constraintBottom_toTopOf="@+id/date"
@@ -72,8 +76,8 @@
             android:gravity="top|left"
             android:includeFontPadding="false"
             android:maxLines="1"
-            android:text="2019/02/01"
-            android:textColor="@color/test3"
+            android:text="@{item.dateText}"
+            android:textColor="@color/wheat"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@+id/img_cover"
             app:layout_constraintLeft_toLeftOf="@+id/title"
@@ -87,7 +91,7 @@
             android:gravity="top|right"
             android:includeFontPadding="false"
             android:maxLines="1"
-            android:text="提供:\t拜拜风尘子"
+            android:text="@{item.owner.nickname}"
             android:textColor="@color/test3"
             android:textSize="14sp"
             app:layout_constraintBottom_toBottomOf="@+id/date"

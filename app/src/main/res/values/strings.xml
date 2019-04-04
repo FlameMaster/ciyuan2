@@ -1,3 +1,25 @@
 <resources>
     <string name="app_name">二刺猿</string>
+    <string name="_null"/>
+    <string name="_n">\n</string>
+    <string name="explain_test">
+        爆裂吧现实，粉碎吧精神，放逐这个世界，遵从血之盟约，吾在此召唤汝，夜之女王！\n\n
+        立誓今生尊你为王，用我热血为你封疆。\n\n
+        无论是现今还是以前我所保护的都是一样，从来就没有变过啊!!!\n\n
+        隐约雷鸣 阴霾天空 即使天无雨 我亦留此地。\n\n
+        尽管岁月浮光世事喧嚣，心中却始终有一个关于你的童话：无论你在哪里，我都会径直奔向你，送你一世不会凋谢的樱花。\n\n
+        谁都不可能和谁在一起一辈子。人就是这样，必须去习惯失去。\n\n
+        如果生命能够重来，无论几次我都要到你身边，我已经别无所求，已经没有什么比你更重要。\n\n
+        我想这世间一定有一个人，和我一起努力着，做着类似的事情，怀揣着同样的梦想，然后某天，不期而遇。\n\n
+        在梦中，我以为人生很漫长，会远得连尽头也看不见，没想到我匆匆翻看，人生，却再也无法逆转。在当下，我以为时间很重，会重得连时针都走不动。没想到我轻轻一吹，时间，却再也没回来过。\n\n
+        遇见竟然需要如此用力，穿越错位的时空，仰望陨落的星辰，你没留下你的名字，我却无法忘记你写在我手心的名字——我爱你。\n\n
+        回望当初，那时我一定也一直在训练自己迈步，如果有一天，能够走得更稳更远了，就去见她吧。\n\n
+        时间带着鲜明的恶意，缓缓地从我的身上流过，我只好咬紧牙关，拼命地不让眼泪落下来。\n\n
+    </string>
+
+    <!--<string name="url_img_home_banner">https://b-ssl.duitang.com/uploads/item/201801/08/20180108181057_VSyJF.gif</string>-->
+    <!--http://img2.100bt.com/upload/ttq/20140606/1402032172085.gif-->
+    <string name="url_img_home_movie">https://i0.hdslb.com/bfs/bangumi/bca4864e564d46bebb6dc0b14371a04fd70b3fda.jpg</string>
+    <string name="url_img_home_live">https://img.mp.itc.cn/upload/20160502/d82a7bcf4a6a40bdad6fe06897780b94_th.jpg</string>
+    <string name="url_img_home_tv">https://cdn.huodongxing.com/logo/org/201604/1642293594569/392368766251005.jpg</string>
 </resources>

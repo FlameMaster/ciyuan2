@@ -1,0 +1,65 @@
+{
+    "code": 200,
+    "data": {
+        "explain": "",
+        "movies": [
+            {
+                "title": "第01话\n",
+                "url": ""
+            },
+            {
+                "title": "第02话\n",
+                "url": ""
+            },
+            {
+                "title": "第03话\n",
+                "url": ""
+            },
+            {
+                "title": "第04话\n",
+                "url": ""
+            },
+            {
+                "title": "第05话\n",
+                "url": ""
+            },
+            {
+                "title": "第06话\n",
+                "url": ""
+            },
+            {
+                "title": "第07话\n",
+                "url": ""
+            },
+            {
+                "title": "第08话\n",
+                "url": ""
+            },
+            {
+                "title": "第09话\n",
+                "url": ""
+            },
+            {
+                "title": "第10话\n",
+                "url": ""
+            },
+            {
+                "title": "第11话\n",
+                "url": ""
+            },
+            {
+                "title": "第12话\n",
+                "url": ""
+            }
+        ],
+        "owner": {
+            "intro": "少年曾经说过，我从红尘走过，只为繁华中寻你，与我同乐。",
+            "nickname": "江湖人称风尘子",
+            "photo": "https://i0.hdslb.com/bfs/face/59d7b014964dc31af6fbf319881f6231777f5f13.jpg"
+        },
+        "textDate": "2019-02-17",
+        "title": "【】()"
+    },
+    "date": 0,
+    "message": "欢迎使用二刺猿"
+}

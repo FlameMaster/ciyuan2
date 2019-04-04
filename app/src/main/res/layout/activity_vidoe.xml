@@ -7,11 +7,16 @@
 
     <data class="ActVideoBD">
 
+        <variable
+            name="movie"
+            type="com.fengchen.ciyuan2.bean.Movie"/>
+
     </data>
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="#fefefe">
 
         <!--appbarlayout下的子view可以渗透状态栏-->
         <android.support.design.widget.AppBarLayout
@@ -31,7 +36,8 @@
                     android:id="@+id/tv"
                     layout="@layout/layout_video"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    app:movie="@{movie}"/>
                 <!--app:layout_collapseMode="parallax"-->
 
             </android.support.design.widget.CollapsingToolbarLayout>
@@ -48,9 +54,11 @@
             >
             <!--底部信息-->
             <include
+                android:id="@+id/other"
                 layout="@layout/layout_video_explain"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                app:movie="@{movie}"/>
         </android.support.v4.widget.NestedScrollView>
 
     </android.support.design.widget.CoordinatorLayout>

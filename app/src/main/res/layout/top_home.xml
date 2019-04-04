@@ -23,6 +23,11 @@
             android:layout_marginTop="24dp"
             android:background="@drawable/bg_round"
             android:elevation="8dp"
+            app:loadImageHeight="@{64}"
+            app:loadImageUrl="@{@string/url_img_home_movie}"
+            app:loadImageWidth="@{64}"
+            app:border_thickness="4dp"
+            app:border_outside_color="@color/gold"
             />
 
         <TextView
@@ -47,10 +52,16 @@
             android:src="@mipmap/user_img"
             app:corner_radius="999dp"
             app:layout_constraintLeft_toRightOf="@+id/movie"
-            app:layout_constraintRight_toLeftOf="@+id/gallery"
+            app:layout_constraintRight_toLeftOf="@+id/tv"
             app:layout_constraintTop_toTopOf="@+id/movie"
             android:background="@drawable/bg_round"
             android:elevation="8dp"
+            app:loadImageHeight="@{64}"
+            app:loadImageUrl="@{@string/url_img_home_live}"
+            app:loadImageWidth="@{64}"
+            app:border_thickness="2dp"
+            app:border_inside_color="@color/test5"
+            app:border_outside_color="@color/test4"
             />
 
         <TextView
@@ -68,7 +79,7 @@
             />
         <!--画作-->
         <com.fengchen.ciyuan2.wiget.RoundImageView
-            android:id="@+id/gallery"
+            android:id="@+id/tv"
             android:layout_width="64dp"
             android:layout_height="64dp"
             android:scaleType="centerCrop"
@@ -79,20 +90,25 @@
             app:layout_constraintTop_toTopOf="@+id/movie"
             android:background="@drawable/bg_round"
             android:elevation="8dp"
+            app:loadImageHeight="@{64}"
+            app:loadImageUrl="@{@string/url_img_home_tv}"
+            app:loadImageWidth="@{64}"
+            app:border_thickness="4dp"
+            app:border_outside_color="@color/test3"
             />
 
         <TextView
-            android:id="@+id/gallery_text"
+            android:id="@+id/tv_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="12dp"
             android:includeFontPadding="false"
-            android:text="【--画作--】"
+            android:text="【--电视--】"
             android:textColor="@color/white"
             android:textSize="12sp"
-            app:layout_constraintLeft_toLeftOf="@+id/gallery"
-            app:layout_constraintRight_toRightOf="@+id/gallery"
-            app:layout_constraintTop_toBottomOf="@+id/gallery"
+            app:layout_constraintLeft_toLeftOf="@+id/tv"
+            app:layout_constraintRight_toRightOf="@+id/tv"
+            app:layout_constraintTop_toBottomOf="@+id/tv"
             />
     </merge>
 </layout>

@@ -18,7 +18,7 @@
         <android.support.design.widget.AppBarLayout
             android:id="@+id/detailed_bar"
             android:layout_width="match_parent"
-            android:layout_height="200dp"
+            android:layout_height="220dp"
             android:theme="@style/AppTheme.AppBarOverlay">
 
             <!--collapsingtoolbar下的子view不能越过菜单栏-->
@@ -30,6 +30,9 @@
                 app:contentScrim="?attr/colorPrimary"
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
                 >
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
                     <android.support.v7.widget.RecyclerView
                         android:id="@+id/banner"
                         android:layout_width="match_parent"
@@ -37,7 +40,12 @@
                         android:overScrollMode="never"
                         android:scrollbars="none"
                         />
-
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="16dp"
+                        android:background="@drawable/shape_banner_bottom"
+                        app:layout_constraintBottom_toBottomOf="parent"/>
+                </android.support.constraint.ConstraintLayout>
             </android.support.design.widget.CollapsingToolbarLayout>
 
         </android.support.design.widget.AppBarLayout>
