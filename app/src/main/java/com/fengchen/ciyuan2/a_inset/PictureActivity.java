@@ -54,6 +54,7 @@ public class PictureActivity extends BaseActivity<PictureActBD> {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //去除Toolbar自有的Title
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+
     }
 
     @Override
@@ -86,6 +87,9 @@ public class PictureActivity extends BaseActivity<PictureActBD> {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
             case R.id.collect:
                 FCUtils.showToast("收藏是不可能收藏的");
                 break;
