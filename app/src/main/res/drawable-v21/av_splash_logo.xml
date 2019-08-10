@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+                 xmlns:tools="http://schemas.android.com/tools"
+                 android:drawable="@drawable/svg_splash_logo"
+                 tools:ignore="NewApi">
+    <target
+        android:animation="@animator/animator_svg_splash_logo_02"
+        android:name="logo1"/>
+    <target
+        android:animation="@animator/animator_svg_splash_logo_03"
+        android:name="logo2"/>
+</animated-vector>

@@ -496,6 +496,7 @@ public class VideoActivity extends BaseActivity<ActVideoBD> {
                 float[] values = event.values;
                 float x = values[0];
                 float y = values[1];
+//                Log.e("范老师mmp","z="+values[2]);
 
                 //根据偏移量判断方向
                 int newOrientation = SCREEN_DIRECTION_UNDEFINED;

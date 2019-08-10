@@ -2,15 +2,35 @@ package com.fengchen.ciyuan2.a_inset;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.LinearGradient;
+import android.graphics.Matrix;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Shader;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.bumptech.glide.request.target.ImageViewTarget;
+import com.bumptech.glide.request.target.Target;
 import com.fengchen.ciyuan2.R;
 import com.fengchen.ciyuan2.bean.InsetItem;
 import com.fengchen.ciyuan2.bean.MainInset;
@@ -19,11 +39,15 @@ import com.fengchen.ciyuan2.bean.MovieItem;
 import com.fengchen.ciyuan2.databinding.FgtInsetBD;
 import com.fengchen.ciyuan2.databinding.ItemInsetBD;
 import com.fengchen.ciyuan2.databinding.ItemInsetBannerBD;
+import com.fengchen.ciyuan2.databinding.LoadMoreBD;
+import com.fengchen.ciyuan2.databinding.TopInsetBD;
 import com.fengchen.ciyuan2.net.CYEntity;
 import com.fengchen.ciyuan2.net.LoadUtils;
 import com.fengchen.ciyuan2.utils.CYUtils;
 import com.fengchen.light.adapter.BaseHolder;
 import com.fengchen.light.adapter.BaseRecyclerAdapter;
+import com.fengchen.light.http.EmptyState;
+import com.fengchen.light.model.StateModel;
 import com.fengchen.light.utils.FCUtils;
 import com.fengchen.light.utils.IOUtils;
 import com.fengchen.light.view.BaseFragment;
@@ -64,7 +88,7 @@ public class InsetFragment extends BaseFragment<FgtInsetBD> {
         mBannerAdapter = new BannerAdapter();
         getViewDataBinding().banner.setAdapter(mBannerAdapter);
         getViewDataBinding().banner.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            float MIN_SCALE = 0.65f;//当前图片缩小比例
+            float MIN_SCALE = 0.8f;//当前图片缩小比例
 
             @Override
             public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
@@ -82,15 +106,21 @@ public class InsetFragment extends BaseFragment<FgtInsetBD> {
                     int childMiddle = (int) (child.getX() + child.getWidth() / 2);
                     //获取相对位置
                     int gap = Math.abs(middle - childMiddle);
-                    float fraction = gap * 1.0f / recyclerView.getWidth() / 2;
-                    scale(child, fraction);
+                    float fraction = (float) gap / (float) recyclerView.getWidth();
+                    scale((ViewGroup) child, fraction);
                 }
             }
 
-            private void scale(View child, float fraction) {
-                float scaleFactor = MIN_SCALE + (1 - MIN_SCALE) * (1 - Math.abs(fraction));
-                child.setScaleX(scaleFactor);
-                child.setScaleY(scaleFactor);
+            private void scale(ViewGroup layout, float fraction) {
+                View mainContainer = layout.getChildAt(0);
+                View invertedView = layout.getChildAt(1);
+                float scaleFactor = MIN_SCALE + (1 - MIN_SCALE) * (1 - fraction);
+                layout.setAlpha(1 - fraction);
+                mainContainer.setScaleX(scaleFactor);
+                mainContainer.setScaleY(scaleFactor);
+                invertedView.setScaleX(scaleFactor);
+                invertedView.setScaleY(scaleFactor);
+                invertedView.setTranslationY(FCUtils.dp2px(24) * fraction);
             }
         });
 
@@ -104,10 +134,20 @@ public class InsetFragment extends BaseFragment<FgtInsetBD> {
         getViewDataBinding().list.setAdapter(mListAdapter);
         mListAdapter.setOnItemClickListener((BaseRecyclerAdapter.OnItemClickListener<InsetItem>) (viewHolder, position, data) -> {
             Intent intent = new Intent(FCUtils.getContext(), PictureActivity.class);
-            intent.putExtra("url",data.getUrl());
-            toActivity(((ItemInsetBD)viewHolder.getBinding()).img,intent);
+            intent.putExtra("url", data.getUrl());
+            toActivity(((ItemInsetBD) viewHolder.getBinding()).img, intent);
         });
+        //尾布局
+        LoadMoreBD loadMoreBinding = DataBindingUtil.inflate(LayoutInflater.from(
+                FCUtils.getContext()), R.layout.item_loadmore, null, false);
+        loadMoreBinding.setState(new StateModel(EmptyState.USER_DEFINED).setUserText(""));
+        RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        lp.height = FCUtils.dp2px(108);
+        loadMoreBinding.getRoot().setLayoutParams(lp);
+        if (mListAdapter.getTailSize() <= 0) mListAdapter.addTailBinding(loadMoreBinding);
 
+        TopInsetBD topInsetBD = TopInsetBD.bind(View.inflate(FCUtils.getContext(), R.layout.top_inset, null));
+        mListAdapter.addHeaderBinding(topInsetBD);
         loadData();
     }
 
@@ -168,7 +208,41 @@ public class InsetFragment extends BaseFragment<FgtInsetBD> {
 
         @Override
         public void bindData(BaseHolder<ItemInsetBannerBD> viewHolder, int position, InsetItem data) {
-            viewHolder.getBinding().setBanner(data);
+//            viewHolder.getBinding().setBanner(data);
+            RequestOptions options = new RequestOptions()
+                    .override(FCUtils.dp2px(280), FCUtils.dp2px(210));
+            Glide.with(FCUtils.getContext()).asBitmap().load(data.getUrl()).apply(options).into(new ImageViewTarget<Bitmap>(viewHolder.getBinding().img) {
+                @Override
+                protected void setResource(@Nullable Bitmap resource) {
+                    getView().setImageBitmap(resource);
+
+                    if (resource != null) {
+                        viewHolder.getBinding().main.setDrawingCacheEnabled(true);
+                        if (viewHolder.getBinding().main.getDrawingCache() != null) {
+                            Bitmap drawingCache = Bitmap.createBitmap(viewHolder.getBinding().main.getDrawingCache());
+                            Matrix matrix = new Matrix();
+                            matrix.preScale(1, -1); // 实现图片的反转
+                            // 创建反转后的图片Bitmap对象
+                            Bitmap reflectionImage = Bitmap.createBitmap(drawingCache, 0,
+                                    drawingCache.getHeight() - FCUtils.dp2px(60), drawingCache.getWidth(), FCUtils.dp2px(60), matrix, false);
+                            //添加遮罩
+                            Bitmap bitmapWithReflection = Bitmap.createBitmap(drawingCache.getWidth(),
+                                    FCUtils.dp2px(60), Bitmap.Config.ARGB_8888);
+                            Canvas canvas = new Canvas(bitmapWithReflection);
+                            canvas.drawBitmap(reflectionImage, 0, 0, null); // 创建画布对象，将原图画于画布，起点是原点位置
+                            Paint paint = new Paint();
+                            LinearGradient shader = new LinearGradient(0, 0, 0, bitmapWithReflection.getHeight(),
+                                    0x70ffffff, 0x00ffffff, Shader.TileMode.MIRROR);// 创建线性渐变LinearGradient对象
+                            paint.setShader(shader); // 绘制
+                            paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));//倒影遮罩效果
+                            // 画布画出反转图片大小区域，然后把渐变效果加到其中，就出现了图片的倒影效果
+                            canvas.drawRect(0, 0, bitmapWithReflection.getWidth(), bitmapWithReflection.getHeight(), paint);
+                            viewHolder.getBinding().imgG.setImageBitmap(bitmapWithReflection);
+                        }
+                    }
+                }
+
+            });
         }
 
         @Override

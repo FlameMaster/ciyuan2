@@ -11,6 +11,7 @@ import static com.fengchen.light.http.EmptyState.PROGRESS;
 import static com.fengchen.light.http.EmptyState.EMPTY;
 import static com.fengchen.light.http.EmptyState.NET_ERROR;
 import static com.fengchen.light.http.EmptyState.NOT_AVAILABLE;
+import static com.fengchen.light.http.EmptyState.USER_DEFINED;
 
 /**
  * ===============================================
@@ -26,7 +27,7 @@ import static com.fengchen.light.http.EmptyState.NOT_AVAILABLE;
  * ================================================
  */
 
-@IntDef({NORMAL, PROGRESS, EMPTY, NOT_MORE_DATA, NET_ERROR, NOT_AVAILABLE})
+@IntDef({NORMAL, PROGRESS, EMPTY, NOT_MORE_DATA, NET_ERROR, NOT_AVAILABLE,USER_DEFINED})
 @Retention(RetentionPolicy.SOURCE)
 public @interface EmptyState {
     /*正常*/
@@ -39,7 +40,9 @@ public @interface EmptyState {
     /*没有更多数据*/
     int NOT_MORE_DATA = -2;
     /*网络未连接*/
-    int NET_ERROR = 100;
+    int NET_ERROR = 404;
     /*服务器不可用*/
-    int NOT_AVAILABLE = 233;
+    int NOT_AVAILABLE = 500;
+    /*用户自定义*/
+    int USER_DEFINED = 233;
 }

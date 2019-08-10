@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.fengchen.ciyuan2.wiget.TopSideLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+        android:id="@id/side_head"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:src="@mipmap/fairytail"
+        android:scaleType="centerCrop"
+        android:foreground="#3666"/>
+
+        <View
+            android:id="@id/side_normal"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="#999"/>
+
+        <android.support.v4.widget.NestedScrollView
+            android:id="@id/side_container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/white"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:textSize="14sp"
+                android:padding="20dp"
+                android:text="@string/large_text"/>
+
+        </android.support.v4.widget.NestedScrollView>
+    </com.fengchen.ciyuan2.wiget.TopSideLayout>
+</layout>

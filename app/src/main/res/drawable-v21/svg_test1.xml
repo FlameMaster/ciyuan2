@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<animated-vector xmlns:android="http://schemas.android.com/apk/res/android"
+                 xmlns:tools="http://schemas.android.com/tools"
+                 android:drawable="@drawable/svg_test"
+                 tools:ignore="NewApi">
+    <target
+        android:animation="@animator/animator_svg"
+        android:name="svgz"/>
+    <target
+        android:animation="@animator/animator_svg1"
+        android:name="svgo"/>
+    <target
+        android:animation="@animator/animator_svg"
+        android:name="svgt"/>
+    <target
+        android:animation="@animator/animator_svg2"
+        android:name="svgf"/>
+</animated-vector>

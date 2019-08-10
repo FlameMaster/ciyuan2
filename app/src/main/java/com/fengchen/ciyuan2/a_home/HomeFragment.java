@@ -3,6 +3,7 @@ package com.fengchen.ciyuan2.a_home;
 import android.animation.Animator;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -13,15 +14,19 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewAnimationUtils;
+import android.view.ViewGroup;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.ImageView;
 
+import com.fengchen.ciyuan2.DomeActivity;
 import com.fengchen.ciyuan2.bean.MainMovie;
 import com.fengchen.ciyuan2.bean.MediaModel;
 import com.fengchen.ciyuan2.bean.Movie;
 import com.fengchen.ciyuan2.bean.MovieItem;
+import com.fengchen.ciyuan2.databinding.LoadMoreBD;
 import com.fengchen.ciyuan2.net.CYEntity;
 import com.fengchen.ciyuan2.net.CYListEntity;
 import com.fengchen.ciyuan2.net.LoadUtils;
@@ -37,7 +42,9 @@ import com.fengchen.ciyuan2.wiget.RoundGifImageView;
 import com.fengchen.ciyuan2.wiget.RoundLayout;
 import com.fengchen.light.adapter.BaseHolder;
 import com.fengchen.light.adapter.BaseRecyclerAdapter;
+import com.fengchen.light.http.EmptyState;
 import com.fengchen.light.model.ImageParameter;
+import com.fengchen.light.model.StateModel;
 import com.fengchen.light.utils.FCUtils;
 import com.fengchen.light.utils.IOUtils;
 import com.fengchen.light.utils.StringUtil;
@@ -111,6 +118,20 @@ public class HomeFragment extends BaseFragment<FgtHomeBD> {
                 testC(v);
             }
         });
+        getViewDataBinding().bar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(),DomeActivity.class));
+            }
+        });
+        //尾布局
+        LoadMoreBD loadMoreBinding = DataBindingUtil.inflate(LayoutInflater.from(
+                FCUtils.getContext()), R.layout.item_loadmore, null, false);
+        loadMoreBinding.setState(new StateModel(EmptyState.USER_DEFINED).setUserText(""));
+        RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        lp.height = FCUtils.dp2px(108);
+        loadMoreBinding.getRoot().setLayoutParams(lp);
+        if (mListAdapter.getTailSize() <= 0) mListAdapter.addTailBinding(loadMoreBinding);
     }
 
     @Override

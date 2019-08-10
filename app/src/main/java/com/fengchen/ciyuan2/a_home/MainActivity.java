@@ -1,8 +1,10 @@
 package com.fengchen.ciyuan2.a_home;
 
+import android.annotation.SuppressLint;
 import android.content.res.Resources;
 import android.graphics.Point;
 import android.os.Build;
+import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.IdRes;
 import android.util.DisplayMetrics;
@@ -106,6 +108,13 @@ public class MainActivity extends BaseActivity<ActivityMainBinding> {
         return R.layout.activity_main;
     }
 
+    //解决fragment重影
+    @SuppressLint("MissingSuperCall")
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        //如果用以下这种做法则不保存状态，再次进来的话会显示默认的tab
+        //  super.onSaveInstanceState(outState);
+    }
 
     /*判断导航栏是否显示*/
     public boolean isNavigationBarShow() {

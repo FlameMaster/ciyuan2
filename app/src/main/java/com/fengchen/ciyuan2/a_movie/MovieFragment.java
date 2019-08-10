@@ -7,22 +7,20 @@ import android.databinding.ViewDataBinding;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.PagerSnapHelper;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewTreeObserver;
+import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
 
+import com.fengchen.ciyuan2.databinding.LoadMoreBD;
+import com.fengchen.ciyuan2.manager.Banner01Manager;
+import com.fengchen.ciyuan2.manager.Banner01SnapHelper;
 import com.fengchen.ciyuan2.RxBusClient;
 import com.fengchen.ciyuan2.bean.FCBean;
 import com.fengchen.ciyuan2.bean.MainMovie;
-import com.fengchen.ciyuan2.bean.MediaModel;
-import com.fengchen.ciyuan2.bean.Movie;
 import com.fengchen.ciyuan2.bean.MovieItem;
-import com.fengchen.ciyuan2.bean.User;
 import com.fengchen.ciyuan2.helper.ItemFullSnapHelper;
 import com.fengchen.ciyuan2.R;
 import com.fengchen.ciyuan2.databinding.FgtMovieBD;
@@ -34,22 +32,15 @@ import com.fengchen.ciyuan2.net.CYEntity;
 import com.fengchen.ciyuan2.net.CYListEntity;
 import com.fengchen.ciyuan2.net.LoadUtils;
 import com.fengchen.ciyuan2.utils.CYUtils;
-import com.fengchen.ciyuan2.utils.DataBindingUtils;
 import com.fengchen.light.adapter.BaseHolder;
 import com.fengchen.light.adapter.BaseRecyclerAdapter;
-import com.fengchen.light.model.EventMessage;
-import com.fengchen.light.model.ImageParameter;
-import com.fengchen.light.rxjava.RxBus;
-import com.fengchen.light.rxjava.fileloader.image.RxImageLoader;
+import com.fengchen.light.http.EmptyState;
+import com.fengchen.light.model.StateModel;
 import com.fengchen.light.utils.IOUtils;
 import com.fengchen.light.utils.StringUtil;
 import com.fengchen.light.view.BaseFragment;
 import com.fengchen.light.utils.FCUtils;
-import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.ObservableOnSubscribe;
@@ -92,10 +83,10 @@ public class MovieFragment extends BaseFragment<FgtMovieBD> implements BaseRecyc
 
         //初始化banner列表
         //给recycle添加整页滑动器
-        new PagerSnapHelper().attachToRecyclerView(getViewDataBinding().banner);
-        getViewDataBinding().banner
-                .setLayoutManager(new LinearLayoutManager(FCUtils.getContext(),
-                        LinearLayoutManager.HORIZONTAL, false));
+//        new PagerSnapHelper().attachToRecyclerView(getViewDataBinding().banner);
+        new Banner01SnapHelper().attachToRecyclerView(getViewDataBinding().banner);
+        Banner01Manager bannerManager =new Banner01Manager();
+        getViewDataBinding().banner .setLayoutManager(bannerManager);
         mBannerAdapter = new BannerAdapter();
         getViewDataBinding().banner.setAdapter(mBannerAdapter);
 
@@ -111,6 +102,14 @@ public class MovieFragment extends BaseFragment<FgtMovieBD> implements BaseRecyc
         mTopMovieBD = TopMovieBD.bind(LayoutInflater.from(FCUtils.getContext())
                 .inflate(R.layout.top_movie, null));
         mListAdapter.addHeaderBinding(mTopMovieBD);
+        //尾布局
+        LoadMoreBD loadMoreBinding = DataBindingUtil.inflate(LayoutInflater.from(
+                FCUtils.getContext()), R.layout.item_loadmore, null, false);
+        loadMoreBinding.setState(new StateModel(EmptyState.USER_DEFINED).setUserText(""));
+        RecyclerView.LayoutParams lp = new RecyclerView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        lp.height = FCUtils.dp2px(108);
+        loadMoreBinding.getRoot().setLayoutParams(lp);
+        if (mListAdapter.getTailSize() <= 0) mListAdapter.addTailBinding(loadMoreBinding);
 
         //初始化推荐列表
         new ItemFullSnapHelper().attachToRecyclerView(mTopMovieBD.recommend);

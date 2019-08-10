@@ -30,6 +30,8 @@ public class StateModel extends BaseObservable {
 
     private boolean empty;
 
+    private String userText =null;
+
     public StateModel() {
     }
 
@@ -95,6 +97,8 @@ public class StateModel extends BaseObservable {
                 return FCUtils.getString(R.string.net_err);
             case EmptyState.NOT_AVAILABLE:
                 return FCUtils.getString(R.string.server_not_avaliabe);
+            case EmptyState.USER_DEFINED:
+                return getUserText();
             default:
                 return FCUtils.getString(R.string.please_check_net_state);
         }
@@ -119,5 +123,12 @@ public class StateModel extends BaseObservable {
         }
     }
 
+    public String getUserText() {
+        return userText;
+    }
 
+    public StateModel setUserText(String userText) {
+        this.userText = userText;
+        return this;
+    }
 }
