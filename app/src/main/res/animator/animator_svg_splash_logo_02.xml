@@ -5,9 +5,10 @@
         android:duration="800"
         android:propertyName="pathData"
         android:valueFrom="
+
         M0,30
-        L50,60
-        H30
+        L0,30
+        H0
         V0
         L10,60
         M200,60

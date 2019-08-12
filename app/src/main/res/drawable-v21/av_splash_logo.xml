@@ -4,9 +4,9 @@
                  android:drawable="@drawable/svg_splash_logo"
                  tools:ignore="NewApi">
     <target
-        android:animation="@animator/animator_svg_splash_logo_02"
+        android:animation="@animator/animator_svg_splash_logo_03"
         android:name="logo1"/>
     <target
-        android:animation="@animator/animator_svg_splash_logo_03"
+        android:animation="@animator/animator_svg_splash_logo_06"
         android:name="logo2"/>
 </animated-vector>
