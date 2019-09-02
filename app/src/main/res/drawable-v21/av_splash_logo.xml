@@ -9,4 +9,7 @@
     <target
         android:animation="@animator/animator_svg_splash_logo_06"
         android:name="logo2"/>
+    <target
+        android:animation="@animator/animator_svg_splash_logo_12"
+        android:name="logo3"/>
 </animated-vector>
