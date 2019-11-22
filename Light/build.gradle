@@ -1,6 +1,6 @@
 apply plugin: 'com.android.library'
 ext {
-    supportLibraryVersion = "28.0.0"
+    supportLibraryVersion = "29.0.2"
     rxJavaVersion = "2.2.4"
     rxAndroidVersion = "2.1.0"
     daggerVersion = "2.19"
@@ -11,10 +11,10 @@ ext {
 }
 
 android {
-    compileSdkVersion 28
+    compileSdkVersion 29
     defaultConfig {
         minSdkVersion 15
-        targetSdkVersion 28
+        targetSdkVersion 29
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -23,6 +23,7 @@ android {
     dataBinding {
         enabled = true
     }
+    buildToolsVersion = supportLibraryVersion
 }
 
 dependencies {
@@ -30,8 +31,8 @@ dependencies {
     androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    implementation "com.android.support:appcompat-v7:$supportLibraryVersion"
-    api 'com.android.support:design:28.0.0'
+    implementation "com.android.support:appcompat-v7:+"
+    api "com.android.support:design:+"
     //Dagger 解耦
     api "com.google.dagger:dagger:$daggerVersion"
     annotationProcessor "com.google.dagger:dagger-compiler:$daggerVersion"

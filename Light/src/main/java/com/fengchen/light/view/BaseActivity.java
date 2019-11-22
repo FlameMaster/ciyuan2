@@ -1,9 +1,5 @@
 package com.fengchen.light.view;
 
-import android.arch.lifecycle.Lifecycle;
-import android.arch.lifecycle.LifecycleObserver;
-import android.arch.lifecycle.LifecycleOwner;
-import android.arch.lifecycle.OnLifecycleEvent;
 import android.content.pm.PackageManager;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
@@ -19,8 +15,6 @@ import android.view.WindowManager;
 import com.fengchen.light.BaseApplication;
 import com.fengchen.light.utils.FCUtils;
 import com.fengchen.light.utils.PermissionUtil;
-
-import org.jetbrains.annotations.NotNull;
 
 /**
  * ===============================================

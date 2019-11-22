@@ -1,12 +1,20 @@
 package com.fengchen.ciyuan2;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.drawable.Animatable;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 
+import com.fengchen.ciyuan2.a_home.MainActivity;
 import com.fengchen.ciyuan2.databinding.ActSplashBD;
 import com.fengchen.light.utils.FCUtils;
+import com.fengchen.light.utils.IOUtils;
 import com.fengchen.light.view.BaseActivity;
+
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observable;
 
 /**
  * ===========================================================
@@ -31,10 +39,19 @@ public class SplashActivity extends BaseActivity<ActSplashBD> {
         return R.layout.activity_splash;
     }
 
+    @SuppressLint("CheckResult")
     public void test(View view){
         Drawable avDrawable = getViewDataBinding().logo.getBackground();
         if (avDrawable instanceof Animatable){
             ((Animatable) avDrawable).start();
         }
+
+        Observable.timer(1000, TimeUnit.MILLISECONDS)
+                .compose(IOUtils.setThread())
+                .subscribe(aLong -> {
+                    Intent intent = new Intent(this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                });
     }
 }
