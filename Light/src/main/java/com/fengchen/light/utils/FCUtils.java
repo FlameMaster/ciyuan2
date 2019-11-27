@@ -1,5 +1,7 @@
 package com.fengchen.light.utils;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
@@ -9,22 +11,20 @@ import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
-import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Handler;
+import android.provider.Settings;
+import android.support.v4.content.ContextCompat;
 import android.telephony.TelephonyManager;
 import android.util.DisplayMetrics;
 import android.util.Log;
-import android.view.Display;
+import android.util.TypedValue;
 import android.view.Gravity;
-import android.view.KeyCharacterMap;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
@@ -38,7 +38,6 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -196,12 +195,25 @@ public class FCUtils {
         return BaseApplication.getmInputMannager();
     }
 
-    /**
-     * @return 获取设备唯一标示码
-     */
+    /*获取设备唯一标示码*/
     public static String getMachineID() {
-        TelephonyManager TelephonyMgr = (TelephonyManager) getContext().getSystemService(Context.TELEPHONY_SERVICE);
-        return TelephonyMgr.getDeviceId();
+        String id = null;
+        if (!lacksPermission(Manifest.permission.READ_PHONE_STATE)) {
+            id = getDeviceId();
+        } else {
+            id = Settings.System.getString(getContext().getContentResolver(), Settings.System.ANDROID_ID);
+            if (!StringUtil.noNull(id))
+                id=Settings.System.getString(getContext().getContentResolver(), Build.SERIAL);
+            if (!StringUtil.noNull(id))
+                id=Settings.System.getString(getContext().getContentResolver(), Build.FINGERPRINT);
+        }
+        return "Android#"+android.os.Build.BRAND+"#"+android.os.Build.MODEL+"#"+id;
+    }
+
+    /* 判断是否缺少权限*/
+    public static boolean lacksPermission(String permission) {
+        return ContextCompat.checkSelfPermission(getContext(), permission) ==
+                PackageManager.PERMISSION_DENIED;
     }
 
 
@@ -248,15 +260,28 @@ public class FCUtils {
      *
      * @return
      */
+    @SuppressLint("MissingPermission")
     public static String getDeviceId() {
-
         StringBuilder deviceId = new StringBuilder();
         // 渠道标志
 //        deviceId.append(getChannelName("UMENG_CHANNEL"));
 //        deviceId.append("#");
 
         try {
-
+            TelephonyManager tm = (TelephonyManager) getContext().getSystemService(Context.TELEPHONY_SERVICE);
+            String deviceid = tm.getDeviceId();
+            if (StringUtil.noNull(deviceid)) {
+                deviceId.append("deviceid");
+                deviceId.append(deviceid);
+//                deviceId.append("#");
+            }
+            //IMEI（imei）
+//            String imei = tm.getDeviceId();
+//            if (StringUtil.noNull(imei)) {
+//                deviceId.append("imei");
+//                deviceId.append(imei);
+//                deviceId.append("#");
+//            }
             //wifi mac地址
 //            WifiManager wifi = (WifiManager) getContext().getSystemService(Context.WIFI_SERVICE);
 //            WifiInfo info = wifi.getConnectionInfo();
@@ -267,27 +292,16 @@ public class FCUtils {
 //                deviceId.append(wifiMac);
 //                deviceId.append("#");
 //            }
-            //IMEI（imei）
-            TelephonyManager tm = (TelephonyManager) getContext().getSystemService(Context.TELEPHONY_SERVICE);
-            String imei = tm.getDeviceId();
-            Log.e("err*****", "imei=" + imei);
-            if (StringUtil.noNull(imei)) {
-                deviceId.append("imei");
-                deviceId.append(imei);
-                deviceId.append("#");
-            }
-
             //序列号（sn）
-            String sn = tm.getSimSerialNumber();
-            Log.e("err*****", "sn=" + sn);
-            if (StringUtil.noNull(sn)) {
-                deviceId.append("sn");
-                deviceId.append(sn);
-            }
+//            String sn = tm.getSimSerialNumber();
+//            if (StringUtil.noNull(sn)) {
+//                deviceId.append("sn");
+//                deviceId.append(sn);
+//            }
         } catch (Exception e) {
             e.printStackTrace();
         } finally {
-            Log.e("err*****", "deviceId=" + deviceId);
+            Log.e("有权限获取设备唯一码", "deviceId=" + deviceId);
             return deviceId.toString();
         }
     }
@@ -446,20 +460,48 @@ public class FCUtils {
      * @return
      */
     public static int getNavigationHeight() {
-
+//        TypedArray actionbarSizeTypedArray = FCUtils.getContext()
+//                    .obtainStyledAttributes(new int[]{android.R.attr.actionBarSize});
+//            float h = actionbarSizeTypedArray.getDimension(0, 0);
         int resourceId;
         int rid = getContext().getResources().getIdentifier("config_showNavigationBar",
                 "bool", "android");
         if (rid != 0) {
             resourceId = getContext().getResources().getIdentifier("navigation_bar_height",
                     "dimen", "android");
+            //全面屏判断
+            String manufacturer = Build.MANUFACTURER;
+            // 这个字符串可以自己定义,例如判断华为就填写huawei,魅族就填写meizu
+            if ("xiaomi".equalsIgnoreCase(manufacturer)) {
+                // true 是手势，默认是 false
+                boolean isFull = false;
+                if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.JELLY_BEAN_MR1) {
+                    isFull = Settings.Global.getInt(getContext().getContentResolver(), "force_fsg_nav_bar", 0) != 0;
+                }
+                if (isFull) return 0;
+            }
             return getContext().getResources().getDimensionPixelSize(resourceId);
         } else
             return 0;
     }
 
+    /**
+     * 获取BAR高度
+     *
+     * @return
+     */
+    public static int getActionBarSize() {
+        TypedValue typedValue = new TypedValue();
+        if (getContext().getTheme().resolveAttribute(android.R.attr.actionBarSize, typedValue, true))
+            return TypedValue.complexToDimensionPixelSize(typedValue.data, getResources().getDisplayMetrics());
+        return FCUtils.dp2px(48);
+    }
+
 
     //////////////////////////////////转化工具//////////////////////////////////
+
+
+
 
     /**
      * dp值转像素值
@@ -490,6 +532,9 @@ public class FCUtils {
     public static float px2dp(int px) {
         return px / getResources().getDisplayMetrics().density;
     }
+
+
+
 
     //////////////////////////////////其它工具//////////////////////////////////
 

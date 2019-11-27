@@ -2,18 +2,12 @@ package com.fengchen.light.adapter;
 
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
-import android.support.v7.util.DiffUtil;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
-import android.util.Log;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import com.fengchen.light.R;
-import com.fengchen.light.utils.FCUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,58 +37,99 @@ public abstract class BaseRecyclerAdapter<T, VH extends BaseHolder> extends Recy
     /*头条目集合*/
     private List<ViewDataBinding> mHeaderBindings;
     /*包含镶嵌布局位置和布局的集合*/
-    private SparseArray<ViewDataBinding> mInsertBindings;
+//    private SparseArray<ViewDataBinding> mInsertBindings;
     /*尾条目集合*/
     private List<ViewDataBinding> mTailBindings;
     /*条目点击事件*/
     private OnItemClickListener mListener;
 
     public BaseRecyclerAdapter() {
-        super();
         mDatas = new ArrayList<>();
         mHeaderBindings = new ArrayList<>();
-        mInsertBindings = new SparseArray<>();
+//        mInsertBindings = new SparseArray<>();
         mTailBindings = new ArrayList<>();
     }
 
-    /**
-     * 设置条目点击事件
-     */
-    public void setOnItemClickListener(OnItemClickListener li) {
+    /*设置条目点击事件*/
+    public void setOnItemClickListener(OnItemClickListener<T, VH> li) {
         mListener = li;
     }
 
-    /**
-     * 根据位置返回保存的数据
-     */
+////////////////////////////////////////镶嵌布局////////////////////////////////////////////////////////
+//
+//    /**
+//     * 添加一个镶嵌布局，在其它条目初始化之后
+//     *
+//     * @param position 位置
+//     * @param binding  镶嵌的布局
+//     */
+//    public void addInsertBinding(int position, ViewDataBinding binding) {
+//        //添加进集合
+////        mInsertBindings.put(position, binding);
+////        notifyDataSetChanged();
+////        notifyItemInserted(position);
+//    }
+//
+//    /**
+//     * @return 头布局数量
+//     */
+//    public int getInsertSize() {
+//        return mInsertBindings.size();
+//    }
+
+//////////////////////////////////////普通布局///////////////////////////////////////////////////////
+
+    /* 根据位置返回保存的数据*/
     public T getData(int position) {
         return mDatas.get(position);
     }
 
-    /**
-     * 返回所有数据的集合
-     */
+    /*返回所有数据的集合*/
     public List<T> getDatas() {
         return mDatas;
     }
 
-    /**
-     * 根据位置获取view
-     *
-     * @param position 位置
-     * @return 镶嵌布局
-     */
-    public ViewDataBinding getInsertBinding(int position) {
-        //头
-        if (position < mHeaderBindings.size())
-            return mHeaderBindings.get(position);
-            //尾
-        else if (position >= mHeaderBindings.size() + mDatas.size() + mInsertBindings.size())
-            return mTailBindings.get(position - mHeaderBindings.size() - mDatas.size() - mInsertBindings.size());
-        Log.e("err****", "position=" + position);
-        //镶嵌布局
-        return mInsertBindings.get(position);
+    /*添加数据*/
+    public void addDatas(List datas) {
+
+        if (datas == null && datas.size() <= 0) return;
+
+        int start = getHeaderSize() + getDatas().size();
+        mDatas.addAll(datas);//添加数据
+        //执行item动画
+        if (getDatas().size() == datas.size()) notifyDataSetChanged();
+        else notifyItemRangeInserted(start, datas.size());
+//        notifyDataSetChanged();
     }
+
+    /*添加数据*/
+    public void addData(T data) {
+        if (data == null) return;
+        int start = getHeaderSize() + getDatas().size();
+        mDatas.add(data);
+        //执行item动画
+        notifyItemRangeInserted(start, 1);
+//        notifyItemInserted(start);
+    }
+
+    /*添加数据到前排*/
+    public void addTopData(T data) {
+        if (data == null) return;
+
+        mDatas.add(0, data);
+        notifyItemRangeInserted(getHeaderSize(), 1);
+    }
+
+
+    /*删除一个*/
+    public void removedData(int position) {
+        if (position >= 0 && position < getDatas().size()) {
+            getDatas().remove(position);
+            notifyItemRangeRemoved(getHeaderSize() + position, 1);
+        }
+    }
+
+//////////////////////////////////////头部布局///////////////////////////////////////////////////////
 
     /**
      * 添加头布局
@@ -103,13 +138,8 @@ public abstract class BaseRecyclerAdapter<T, VH extends BaseHolder> extends Recy
      */
     public void addHeaderBinding(ViewDataBinding binding) {
         if (binding == null) return;
-        if (mHeaderBindings.size() == 0) {
-            mHeaderBindings.add(DataBindingUtil.inflate(
-                    LayoutInflater.from(FCUtils.getContext()), R.layout.null_layout, null, false));
-        }
         mHeaderBindings.add(binding);
-
-        notifyItemInserted(1);
+        notifyItemInserted(0);
     }
 
     /**
@@ -119,25 +149,7 @@ public abstract class BaseRecyclerAdapter<T, VH extends BaseHolder> extends Recy
         return mHeaderBindings.size();
     }
 
-    /**
-     * 添加一个镶嵌布局，在其它条目初始化之后
-     *
-     * @param position 位置
-     * @param binding  镶嵌的布局
-     */
-    public void addInsertBinding(int position, ViewDataBinding binding) {
-        //添加进集合
-        mInsertBindings.put(position, binding);
-//        notifyDataSetChanged();
-//        notifyItemInserted(position);
-    }
-
-    /**
-     * @return 头布局数量
-     */
-    public int getInsertSize() {
-        return mInsertBindings.size();
-    }
+//////////////////////////////////////尾部布局///////////////////////////////////////////////////////
 
     /**
      * 添加尾布局
@@ -146,14 +158,10 @@ public abstract class BaseRecyclerAdapter<T, VH extends BaseHolder> extends Recy
      */
     public void addTailBinding(ViewDataBinding binding) {
         if (binding == null) return;
-        if (mHeaderBindings.size() == 0) {
-            mHeaderBindings.add(DataBindingUtil.inflate(
-                    LayoutInflater.from(FCUtils.getContext()), R.layout.null_layout, null, false));
-        }
         mTailBindings.add(binding);
-
         //执行item动画
-//        notifyItemInserted(getHeaderSize() + getDatas().size() + getInsertSize() + getTailSize());
+//        滚动中不能调用
+//        notifyItemInserted(getHeaderSize() + getDatas().size() + getTailSize());
     }
 
     /**
@@ -163,7 +171,7 @@ public abstract class BaseRecyclerAdapter<T, VH extends BaseHolder> extends Recy
      */
     public void removedTail(int position) {
         mTailBindings.remove(position);
-        notifyItemRemoved(getHeaderSize() + getDatas().size() + getInsertSize() + position);
+        notifyItemRemoved(getHeaderSize() + getDatas().size() + position);
     }
 
     /**
@@ -173,51 +181,20 @@ public abstract class BaseRecyclerAdapter<T, VH extends BaseHolder> extends Recy
         return mTailBindings.size();
     }
 
-    /**
-     * 添加数据
-     */
-    public void addDatas(List datas) {
-
-        if (datas == null && datas.size() <= 0) return;
-
-        int start = getHeaderSize() + getDatas().size();
-        mDatas.addAll(datas);//添加数据
-        //执行item动画
-        notifyItemRangeInserted(start, datas.size());
-        notifyItemRangeChanged(getHeaderSize() + getDatas().size() + getInsertSize()+1,getTailSize());
-//        notifyDataSetChanged();
+    public ViewDataBinding getTail(int position) {
+        if (position < getTailSize() && position >= 0)
+            return mTailBindings.get(position);
+        return null;
     }
 
-    /**
-     * 添加数据
-     */
-    public void addData(T data) {
-        if (data == null) return;
-        int start = getHeaderSize() + getDatas().size();
-        mDatas.add(data);
-        //执行item动画
-        notifyItemRangeInserted(start, 1);
-        notifyItemRangeChanged(getHeaderSize() + getDatas().size() + getInsertSize()+1,getTailSize());
-//        notifyItemInserted(start);
-    }
-
-    /**
-     * 添加数据到前排
-     */
-    public void addTopData(T data) {
-        if (data == null) return;
-
-        mDatas.add(0, data);
-        notifyItemRangeInserted(getHeaderSize(),
-                getHeaderSize() + getDatas().size() + getInsertSize() + getTailSize());
-    }
+    //////////////////////////////////////删除数据///////////////////////////////////////////////////////
 
     /**
      * 删除所有数据，一条一条删
      */
     public void clearDatas() {
         int size2 = getTailSize();
-        int size1 = size2 + getDatas().size() + getInsertSize();
+        int size1 = size2 + getDatas().size();
         int size = size1 + getHeaderSize();
 
         if (size > 0) {
@@ -225,10 +202,7 @@ public abstract class BaseRecyclerAdapter<T, VH extends BaseHolder> extends Recy
                 if (i >= size1) {
                     mHeaderBindings.remove(0);
                 } else if (i >= size2) {
-                    if (mInsertBindings.get(i) != null)
-                        mInsertBindings.remove(i);
-                    else
-                        mDatas.remove(0);
+                    mDatas.remove(0);
                 } else {
                     mTailBindings.remove(0);
                 }
@@ -242,7 +216,7 @@ public abstract class BaseRecyclerAdapter<T, VH extends BaseHolder> extends Recy
     public void clearAllData() {
         mHeaderBindings.clear();
         mTailBindings.clear();
-        mInsertBindings.clear();
+//        mInsertBindings.clear();
         clearData();
     }
 
@@ -252,33 +226,44 @@ public abstract class BaseRecyclerAdapter<T, VH extends BaseHolder> extends Recy
         notifyDataSetChanged();
     }
 
-    /**
-     * 根据位置判断条目类型
-     */
+////////////////——————————————————上面是对数据的操作，下面是对ui的操作————————————————————////////////////
+
+
+    /*根据位置获取镶嵌view*/
+    public ViewDataBinding getCustomBinding(int position) {
+        //头
+        if (position < mHeaderBindings.size())
+            return mHeaderBindings.get(position);
+            //尾
+        else if (position >= mHeaderBindings.size() + mDatas.size())
+            return mTailBindings.get(position - mHeaderBindings.size() - mDatas.size());
+        //镶嵌布局
+        return null;
+    }
+
+    /*根据位置判断条目类型*/
     @Override
     public int getItemViewType(int position) {
 
         //没有镶嵌布局时返回正常布局类型-1
-        if (mHeaderBindings.size() == 0 && mInsertBindings.size() == 0) return TYPE_NORMAL;
+        if (mHeaderBindings.size() <= 0 && mTailBindings.size() <= 0) return TYPE_NORMAL;
 
         //镶嵌布局返回所在位置
         if (position < mHeaderBindings.size()
-                || position >= mHeaderBindings.size() + mDatas.size() + mInsertBindings.size()
-                || (mInsertBindings.size() > 0 && mInsertBindings.get(position) != null))
+                || position >= mHeaderBindings.size() + mDatas.size())
             return position;
 
         //默认布局
         return TYPE_NORMAL;
     }
 
-    /**
-     * 初始化条目
-     */
+    /*初始化条目*/
     @Override
     public BaseHolder onCreateViewHolder(ViewGroup parent, final int viewType) {
 
+        //判断条目类型是否是普通类型
         if (viewType != TYPE_NORMAL)
-            return onCustomCreate(getInsertBinding(viewType), viewType);
+            return onCustomCreate(getCustomBinding(viewType), viewType);
 
         ViewDataBinding binding = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.getContext()),
@@ -289,9 +274,7 @@ public abstract class BaseRecyclerAdapter<T, VH extends BaseHolder> extends Recy
         return onCreate(binding, viewType);
     }
 
-    /**
-     * 初始化对应条目数据
-     */
+    /* 初始化对应条目数据*/
     @Override
     public void onBindViewHolder(final BaseHolder viewHolder, int position) {
         //判断布局类型执行相关超作
@@ -313,46 +296,44 @@ public abstract class BaseRecyclerAdapter<T, VH extends BaseHolder> extends Recy
         }
     }
 
-    /**
-     * 使Grid布局时头布局独占一行
-     */
+    /*使Grid布局时头布局独占一行*/
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
-
         RecyclerView.LayoutManager manager = recyclerView.getLayoutManager();
+        //判断是否是grid布局
         if (manager instanceof GridLayoutManager) {
             final GridLayoutManager gridManager = ((GridLayoutManager) manager);
             gridManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
                 @Override
                 public int getSpanSize(int position) {
+                    //非普通布局独占整行
                     return getItemViewType(position) != TYPE_NORMAL ? gridManager.getSpanCount() : 1;
                 }
             });
         }
     }
 
-    /**
-     * 使用瀑布流时使头布局独占一行
-     */
+    /*使用瀑布流时使头布局独占一行*/
     @Override
     public void onViewAttachedToWindow(BaseHolder holder) {
         super.onViewAttachedToWindow(holder);
         ViewGroup.LayoutParams lp = holder.itemView.getLayoutParams();
-        if (getHeaderSize() > 0 && lp != null && lp instanceof StaggeredGridLayoutManager.LayoutParams) {
+        if (lp != null && lp instanceof StaggeredGridLayoutManager.LayoutParams//判断布局类型是瀑布流
+                && (getHeaderSize() > 0 | getTailSize() > 0)) {//判断是否包含头布局和尾布局
             StaggeredGridLayoutManager.LayoutParams p = (StaggeredGridLayoutManager.LayoutParams) lp;
             boolean fullSpan = false;
+            //头布局
             if (holder.getLayoutPosition() < getHeaderSize())
-                fullSpan = true;//头布局
-            if (holder.getLayoutPosition() >= getHeaderSize() + getDatas().size() + getInsertSize())
-                fullSpan = true;//尾布局
+                fullSpan = true;
+            //尾布局
+            if (holder.getLayoutPosition() >= getHeaderSize() + getDatas().size())
+                fullSpan = true;
             p.setFullSpan(fullSpan);
         }
     }
 
-    /**
-     * 获取当前条目位置,此功能只对普通条目有效，镶嵌条目不计算
-     */
+    /*获取当前条目位置,此功能只对普通条目有效，镶嵌条目不计算*/
     public int getRealPosition(BaseHolder holder) {
 
         int position = holder.getLayoutPosition();
@@ -360,57 +341,46 @@ public abstract class BaseRecyclerAdapter<T, VH extends BaseHolder> extends Recy
         int realPosition = position - mHeaderBindings.size();
 
         //遍历map中的键
-        for (int i = 0; i < mInsertBindings.size(); i++) {
-            int index = mInsertBindings.keyAt(i);
-            if (index <= realPosition)
-                realPosition--;
-
-        }
+//        for (int i = 0; i < mInsertBindings.size(); i++) {
+//            int index = mInsertBindings.keyAt(i);
+//            if (index <= realPosition)
+//                realPosition--;
+//
+//        }
         return realPosition;
     }
 
-    /**
-     * 返回总共的条目数
-     */
+    /*返回总共的条目数*/
     @Override
     public int getItemCount() {
-        return mDatas.size() + mHeaderBindings.size() + mInsertBindings.size() + mTailBindings.size();
+        return mDatas.size() + mHeaderBindings.size() + mTailBindings.size();
     }
 
-    /**
-     * 对条目数据初始化
-     */
-    public abstract void bindData(VH viewHolder, int RealPosition, T data);
 
-    /**
-     * 对特殊条目的初始化
-     */
-    protected abstract void bindCustomData(BaseHolder viewHolder, int position, int itemViewType);
+////////////////————————————————————————子类去实现的一些方法——————————————————————————////////////////
 
-    /**
-     * 布局引用
-     */
+
+    /* 对条目数据初始化*/
+    public abstract void bindData(VH viewHolder, int position, T data);
+
+    /*对特殊条目的初始化*/
+    protected void bindCustomData(BaseHolder viewHolder, int position, int itemViewType) {
+    }
+
+    /*布局引用*/
     public abstract int getItemLayoutId(int viewType);
 
-    /**
-     * 初始化
-     */
+    /*初始化*/
     protected abstract VH onCreate(ViewDataBinding binding, int viewType);
 
-    /**
-     * 可以被继承的特殊条目初始化
-     *
-     * @param insertBinding
-     * @param viewType
-     * @return
-     */
+    /*可以被继承的特殊条目初始化*/
     public BaseHolder onCustomCreate(ViewDataBinding insertBinding, int viewType) {
         return new BaseHolder(insertBinding);
     }
 
 
     /*条目点击事件接口*/
-    public interface OnItemClickListener<T> {
-        void onItemClick(BaseHolder viewHolder, int position, T data);
+    public interface OnItemClickListener<T, VH extends BaseHolder> {
+        void onItemClick(VH viewHolder, int position, T data);
     }
 }

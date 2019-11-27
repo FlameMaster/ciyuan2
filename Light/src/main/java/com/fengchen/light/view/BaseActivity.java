@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.WindowManager;
 
 import com.fengchen.light.BaseApplication;
-import com.fengchen.light.utils.FCUtils;
 import com.fengchen.light.utils.PermissionUtil;
 
 /**
@@ -95,13 +94,15 @@ public abstract class BaseActivity<DB extends ViewDataBinding> extends AppCompat
      *          拒绝: PackageManager.PERMISSION_DENIED
      */
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode,permissions,grantResults);
         if (grantResults[0]== PackageManager.PERMISSION_GRANTED){
             Log.e(getClass().getName(),"权限授予成功");
             if (permissionGrant!=null)
                 permissionGrant.onPermissionGranted(requestCode);
         }else {
-            FCUtils.showToast("未能授予权限");
+            if (permissionGrant!=null)
+                permissionGrant.onPermissionCancel(requestCode);
         }
     }
     /*权限申请成功的回调*/
