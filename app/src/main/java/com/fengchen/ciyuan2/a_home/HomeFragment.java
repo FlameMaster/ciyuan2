@@ -73,8 +73,8 @@ import io.reactivex.ObservableOnSubscribe;
  */
 public class HomeFragment extends BaseFragment<FgtHomeBD> {
 
-    final String url = "https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1544282968&di=b71095ebeb311984002154ed4d483844&imgtype=jpg&er=1&src=http%3A%2F%2Fi1.hdslb.com%2Fbfs%2Farchive%2Fd926af39dbdbf60f2f149377c4b76371e4447532.jpg",
-            url2 = "https://imgweb.8868.com/jiaoyi_manage_imgs/36f14d32f68e449bb2d32f766c558a9c.gif";
+    final String url = ".jpg",
+            url2 = "https://i0.hdslb.com/bfs/article/dd7596b659a8b448e823e3155a7f35dd7baf0b43.png";
 
 
     RecommendAdapter mRecommendAdapter;

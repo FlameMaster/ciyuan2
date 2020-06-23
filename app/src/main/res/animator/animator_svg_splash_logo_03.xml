@@ -5,7 +5,6 @@
         android:duration="800"
         android:propertyName="pathData"
         android:valueFrom="
-
         M150,150
         L150,158
         M120,150

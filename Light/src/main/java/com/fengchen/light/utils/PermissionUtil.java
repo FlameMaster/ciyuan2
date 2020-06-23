@@ -80,7 +80,11 @@ public class PermissionUtil {
     };
 
     public interface PermissionGrant {
+        //成功授权
         void onPermissionGranted(int requestCode);
+
+        //授权失败
+        void onPermissionCancel(int requestCode);
     }
 
     /**
@@ -131,7 +135,7 @@ public class PermissionUtil {
             //如果未开启此权限，则判断是否需要向用户解释为何申请权限
             if (ActivityCompat.shouldShowRequestPermissionRationale(activity, requestPermission)) {
                 Log.e(TAG, "requestPermission shouldShowRequestPermissionRationale");
-                shouldShowRationale(activity, requestCode, requestPermission);
+                shouldShowRationale(activity, requestCode, requestPermission, permissionGrant);
 
             } else {
                 Log.d(TAG, "requestCameraPermission else");
@@ -172,7 +176,7 @@ public class PermissionUtil {
             if (permissionGrant != null)
                 permissionGrant.onPermissionGranted(CODE_MULTI_PERMISSION);
         } else {
-            openSettingActivity(activity, "those permission need granted!");
+            openSettingActivity(activity, "those permission need granted!", permissionGrant);
         }
 
     }
@@ -206,7 +210,7 @@ public class PermissionUtil {
                                     CODE_MULTI_PERMISSION);
                             Log.d(TAG, "showMessageOKCancel requestPermissions");
                         }
-                    });
+                    }, grant);
         } else {
             grant.onPermissionGranted(CODE_MULTI_PERMISSION);
         }
@@ -214,25 +218,36 @@ public class PermissionUtil {
     }
 
 
-    private static void shouldShowRationale(final Activity activity, final int requestCode, final String requestPermission) {
+    /*显示解释弹窗*/
+    private static void shouldShowRationale(final Activity activity, final int requestCode, final String requestPermission, PermissionGrant permissionGrant) {
         String[] permissionsHint = activity.getResources().getStringArray(R.array.permissions);
-        showMessageOKCancel(activity, "Rationale: " + permissionsHint[requestCode],
+        showMessageOKCancel(activity, permissionsHint[requestCode],
                 new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                ActivityCompat.requestPermissions(activity,
-                        new String[]{requestPermission},
-                        requestCode);
-                Log.d(TAG, "showMessageOKCancel requestPermissions:" + requestPermission);
-            }
-        });
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        ActivityCompat.requestPermissions(activity,
+                                new String[]{requestPermission},
+                                requestCode);
+                        Log.d(TAG, "showMessageOKCancel requestPermissions:" + requestPermission);
+                    }
+                }, permissionGrant);
     }
 
-    private static void showMessageOKCancel(final Activity context, String message, DialogInterface.OnClickListener okListener) {
+    /*显示解释弹窗*/
+    private static void showMessageOKCancel(final Activity context, String message,
+                                            DialogInterface.OnClickListener okListener,
+                                            final PermissionGrant permissionGrant) {
         new AlertDialog.Builder(context)
                 .setMessage(message)
-                .setPositiveButton("OK", okListener)
-                .setNegativeButton("Cancel", null)
+                .setPositiveButton("开启", okListener)
+                .setNegativeButton("取消", new
+                        DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                if (permissionGrant != null)
+                                    permissionGrant.onPermissionCancel(-1);
+                            }
+                        })
                 .create()
                 .show();
 
@@ -274,12 +289,12 @@ public class PermissionUtil {
         } else {
             Log.i(TAG, "onRequestPermissionsResult PERMISSION NOT GRANTED");
             String[] permissionsHint = activity.getResources().getStringArray(R.array.permissions);
-            openSettingActivity(activity, "Result" + permissionsHint[requestCode]);
+            openSettingActivity(activity, "Result" + permissionsHint[requestCode], permissionGrant);
         }
 
     }
 
-    private static void openSettingActivity(final Activity activity, String message) {
+    private static void openSettingActivity(final Activity activity, String message, PermissionGrant permissionGrant) {
 
         showMessageOKCancel(activity, message, new DialogInterface.OnClickListener() {
             @Override
@@ -291,7 +306,7 @@ public class PermissionUtil {
                 intent.setData(uri);
                 activity.startActivity(intent);
             }
-        });
+        }, permissionGrant);
     }
 
 
