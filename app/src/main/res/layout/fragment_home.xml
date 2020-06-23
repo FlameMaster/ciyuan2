@@ -33,7 +33,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <!--<com.fengchen.ciyuan2.wiget.DiffusionView-->
+                <!--<com.fengchen.ciyuan2.wiget.DiffusionView-->onCreateViewHolder
                 <!--android:id="@+id/banner"-->
                 <!--android:layout_width="match_parent"-->
                 <!--android:layout_height="0dp"-->
